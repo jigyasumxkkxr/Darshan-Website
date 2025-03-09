@@ -29,7 +29,7 @@ app.use('/api/enquiry', enquiryRoutes);
 
 
 app.listen(PORT, ()=> {
-    connectDB
+    connectDB();
     console.log(`Server is running on port ${PORT}`);
 });
 

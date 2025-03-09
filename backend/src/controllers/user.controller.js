@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import { sendResetPasswordVerificationEmail } from "../services/sendResetPasswordVerificationEmail.js";
 import { sendVerificationEmail } from "../services/sendVerificationEmail.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 
 export const register = async (req, res) => {
@@ -70,6 +71,10 @@ export const verifyRegistrationOtp = async(req, res)=> {
         const user = await User.findOne({ email });
         if (!user) {
           return res.status(404).json({ success: false, message: "User not found." });
+        }
+
+        if(user.is_verified) {
+          return res.status(400).json({ success: false, message: "User is already verified ." });
         }
     
         if (user.otp !== otp || Date.now() > user.otp_expiry) {

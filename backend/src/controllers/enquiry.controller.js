@@ -4,9 +4,10 @@ import { Enquiry } from "../models/enquiry.model.js";
 // 📌 Add a new enquiry
 export const addEnquiry = async (req, res) => {
     try {
-        const { packageName, user, destination, subtype, name, mobile, email, adult, child, infant, travelDate, specialRequests, status,totalAmmount, paymentStatus } = req.body;
+        const user = req.user._id;
+        const { packageName, destination, subtype, name, mobile, email, adult, child, infant, travelDate, specialRequests, status,totalAmmount, paymentStatus } = req.body;
 
-        if (!packageName || !user || !destination || !name || !mobile || !email) {
+        if (!packageName || !destination || !name || !mobile || !email) {
             return res.status(400).json({success:false, message: "Required fields are missing" });
         }
 
@@ -132,7 +133,7 @@ export const getUserEnquiries = async (req, res) => {
     try {
         const userId = req.user._id; 
 
-        const enquiries = await Enquiry.find({ user: userId }).populate("destination");
+        const enquiries = await Enquiry.find({ user: userId });
 
         if (!enquiries.length) {
             return res.status(404).json({ success: false, message: "No enquiries found for this user" });

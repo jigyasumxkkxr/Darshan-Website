@@ -27,12 +27,10 @@ const userSchema = new mongoose.Schema({
         type:String
     },
     otp:{
-        type:String, 
-        required:true
+        type:String,
     },
     otp_expiry:{
-        type:Date, 
-        default:null
+        type:Date,
     },
     is_verified: {
         type:Boolean, 

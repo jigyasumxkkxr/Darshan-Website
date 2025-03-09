@@ -1,4 +1,4 @@
-const emailTemplate = (otp, name) => {
+export const emailTemplate = (otp, name) => {
     return `
       <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; padding: 30px; border-radius: 10px; background: #f4f4f4; color: #333; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         
@@ -30,5 +30,5 @@ const emailTemplate = (otp, name) => {
     `;
   };
   
-  export default emailTemplate;
+
   

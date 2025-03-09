@@ -1,6 +1,6 @@
 📌 API Documentation for User Authentication & Management
 
-🔗 Base URL: http://localhost:5000/api/user
+🔗 Base URL: http://localhost:8144/api/user
 
 
 🧑‍💻 User Registration & Authentication APIs
@@ -94,7 +94,7 @@ Request Body (JSON):
 
 🌍 Destination Management API Documentation
 
-🔗 Base URL: http://localhost:5000/api/destination
+🔗 Base URL: http://localhost:8144/api/destination
 
 
 1️⃣ Add a Destination
@@ -260,7 +260,7 @@ Response (200 OK):
 
 📌 Enquiry Management API Documentation
 
-📌 Base URL: http://localhost:8143/api/enquiry
+📌 Base URL: http://localhost:8144/api/enquiry
 
 
 1️⃣ Add a New Enquiry
@@ -269,7 +269,6 @@ Endpoint: POST /api/enquiry/add
 Request Body:
 {
   "packageName": "Golden Triangle Tour",
-  "user": "65a1234e5f6789abc123d456",
   "destination": "65a4567e5f6789abc456d789",
   "subtype": "Cultural",
   "name": "John Doe",
