@@ -6,7 +6,7 @@ const browserRouter = createBrowserRouter([
   {
     path: "/",
     element:<Home/>
-  }
+  },
 ])
 
 export default function App() {
