@@ -224,10 +224,13 @@ export const resendOTP = async (req, res) => {
       user.otp = otp;
       user.otp_expiry = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
       await user.save();
+
+      user.otp = undefined;
+      user.password = undefined;
   
       await sendResetPasswordVerificationEmail(email, otp, user.name);
   
-      return res.status(200).json({ success: true, message: "Reset password OTP sent." });
+      return res.status(200).json({ success: true, message: "Reset password OTP sent.", user });
     } catch (error) {
       console.error("Error in sending reset password OTP:", error);
       return res.status(500).json({ success: false, message: "Internal Server Error in sending reset password OTP." });
