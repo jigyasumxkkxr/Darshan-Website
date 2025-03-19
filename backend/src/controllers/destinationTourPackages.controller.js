@@ -34,7 +34,7 @@ export const addTourPackage = async (req, res) => {
 // ✅ Get all tour packages
 export const getAllTourPackages = async (req, res) => {
     try {
-        const tourPackages = await DestinationTourPackages.find();
+        const tourPackages = await DestinationTourPackages.find().populate('Destinations', 'packageImgUrl');
         res.status(200).json({ success: true, data: tourPackages });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error fetching tour packages", error: error.message });
