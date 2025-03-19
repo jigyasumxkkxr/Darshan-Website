@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, MessageSquare, Search } from "lucide-react"
 import Header from "@/components/header"
+import Footer from "@/components/footer"
+
 
 export default function Home() {
   return (
@@ -102,6 +104,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   )
 }

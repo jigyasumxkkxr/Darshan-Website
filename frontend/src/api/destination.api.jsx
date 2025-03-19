@@ -36,3 +36,4 @@ export const getAllDestination = () => fetchAPI('/getall');
 export const getDestinationById = (id) => fetchAPI(`/get/${id}`);
 export const updateDestination = (id, data) => fetchAPI(`/update/${id}`, 'PUT', data);
 export const deleteDestination = (id) => fetchAPI(`/delete/${id}`, 'DELETE');
+export const searchDestination = (data) => fetchAPI('/search', 'POST', data);

@@ -98,3 +98,24 @@ export const updateDestination = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal Server Error in updating destination" });
     }
 };
+
+
+
+//Search Destination
+
+export const searchDestination = async (req, res) => {
+    try {
+        const {packageName} = req.body;
+        const destinations = await Destination.find({packageName:packageName});
+
+        if (destinations.length === 0) {
+            return res.status(404).json({ success: false, message: "Destination not found" });
+        }
+
+        return res.status(200).json({ success: true, message: "Destination found", destinations });
+
+    } catch (error) {
+        console.log("Error in search destination:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error in search destination " });
+    }
+}

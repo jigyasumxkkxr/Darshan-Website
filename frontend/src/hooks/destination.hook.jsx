@@ -1,4 +1,4 @@
-import { addDestination, deleteDestination, getAllDestination, getDestinationById, updateDestination } from "@/api/destination.api";
+import { addDestination, deleteDestination, getAllDestination, getDestinationById, searchDestination, updateDestination } from "@/api/destination.api";
 import { useState } from "react";
 
 const useApiCall = (apiFunction) => {
@@ -32,3 +32,4 @@ export const useGetAllDestination = () => useApiCall(getAllDestination);
 export const useGetDestinationById = () => useApiCall(getDestinationById);
 export const useUpdateDestination = () => useApiCall(updateDestination);
 export const useDeleteDestination = () => useApiCall(deleteDestination);
+export const useSearchDestination = () => useApiCall(searchDestination);
