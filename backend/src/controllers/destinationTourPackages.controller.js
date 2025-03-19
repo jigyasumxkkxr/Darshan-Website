@@ -1,4 +1,4 @@
-import { DestinationTourPackages } from "../models/destinationTourPackages.model";
+import { DestinationTourPackages } from "../models/destinationTourPackages.model.js";
 
 
 // ✅ Add a new tour package

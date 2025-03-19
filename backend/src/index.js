@@ -6,7 +6,7 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/user.route.js';
 import destinationRoutes from './routes/destination.route.js';
 import enquiryRoutes from './routes/enquiry.route.js';
-import destinationTourPackageRoutes from './routes/destinationTourPackage.route.js';
+import destinationTourPackageRoutes from './routes/destinationTourPackages.route.js';
 
 dotenv.config();
 
