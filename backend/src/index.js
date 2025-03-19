@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/user.route.js';
 import destinationRoutes from './routes/destination.route.js';
 import enquiryRoutes from './routes/enquiry.route.js';
+import destinationTourPackageRoutes from './routes/destinationTourPackages.route.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use('/api/user', userRoutes);
 app.use('/api/destination', destinationRoutes);
 app.use('/api/enquiry', enquiryRoutes);
+app.use('/api/destination-tour-packages', destinationTourPackageRoutes);
 
 
 app.listen(PORT, ()=> {
