@@ -30,15 +30,10 @@ const PackageDetailsForm = ({ formData, setFormData }) => {
     
           // Convert to Base64
           const fileUri = await convertToBase64(compressedFile, extName);
-
-          console.log(fileUri);
-          
     
           // Upload to Cloudinary
           const cloudResponse = await uploadToCloudinary(fileUri);
           if (!cloudResponse) throw new Error("Image upload failed");
-
-          console.log(cloudResponse.secure_url);
     
           // Update state with Cloudinary URL
           setFormData({ ...formData, packageImgUrl: cloudResponse.secure_url });

@@ -1,5 +1,6 @@
 import { Destination } from "../models/destination.model.js";
 import sharp from "sharp";
+import mongoose from "mongoose";
 
 export const addDestination = async (req, res) => {
     try {
@@ -70,27 +71,36 @@ export const removeDestination = async(req, res)=> {
 // 📌 Update a Destination
 export const updateDestination = async (req, res) => {
     try {
+        // Ensure the user is an authorized admin
         const admin = req.user;
-        if (!admin || admin.role !== 'admin' || !admin.is_verified) {
-            return res.status(401).json({ success: false, message: "You are not authorized to perform this action" });
+        if (!admin || admin.role !== "admin" || !admin.is_verified) {
+            return res.status(403).json({ success: false, message: "Unauthorized access" });
         }
 
         const { id } = req.params;
         const updates = req.body;
 
-        const destination = await Destination.findById(id);
-        if (!destination) {
+        // Validate ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, message: "Invalid destination ID" });
+        }
+
+        // Find and update the destination
+        const updatedDestination = await Destination.findByIdAndUpdate(
+            id,
+            { $set: updates },
+            { new: true, runValidators: true } // Return updated doc & apply validators
+        );
+
+        if (!updatedDestination) {
             return res.status(404).json({ success: false, message: "Destination not found" });
         }
 
-        // Update fields
-        Object.keys(updates).forEach((key) => {
-            destination[key] = updates[key];
+        return res.status(200).json({
+            success: true,
+            message: "Destination updated successfully",
+            destination: updatedDestination,
         });
-
-        await destination.save();
-
-        return res.status(200).json({ success: true, message: "Destination updated successfully", destination });
 
     } catch (error) {
         console.error("Error updating destination:", error);

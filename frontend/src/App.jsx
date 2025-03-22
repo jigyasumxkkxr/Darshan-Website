@@ -8,6 +8,10 @@ import DarshanKutumb from './pages/DarshanKutumb';
 import AdminDashboard from './pages/admin/Dashboard';
 import ManageTours from './pages/admin/ManageTours';
 import AddDestinationTour from './components/admin/AddTour';
+import UpdateDestinationTour from './components/admin/UpdateTour';
+import ManageToursPackages from './pages/admin/ManageToursPackages';
+import AddPackage from './components/admin/AddToursPackage';
+import EnquiriesPage from './pages/admin/ManageEnquiry';
 
 const browserRouter = createBrowserRouter([
   {
@@ -41,6 +45,22 @@ const browserRouter = createBrowserRouter([
   {
     path: '/admin/manage-tour/add',
     element: <AddDestinationTour />
+  },
+  {
+    path: '/admin/manage-tour/update/:id',
+    element: <UpdateDestinationTour />
+  },
+  {
+    path: '/admin/manage-tours-packages',
+    element: <ManageToursPackages />
+  },
+  {
+    path: '/admin/manage-tours-packages/add',
+    element: <AddPackage />
+  },
+  {
+    path: '/admin/enquiry',
+    element: <EnquiriesPage />
   }
 ])
 

@@ -7,92 +7,72 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useDeleteDestination, useGetAllDestination } from "@/hooks/destination.hook";
+import { removeDestinationFromStore, setDestinations } from "@/store/destinationSlice";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeftLong } from "react-icons/fa6";
 
 export default function ManageTours() {
-  const [tours, setTours] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [editingTour, setEditingTour] = useState(null);
-  const { register, handleSubmit, reset } = useForm();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { destinations } = useSelector(state => state.destination);
+  const { callApi: DeleteDestination } = useDeleteDestination();
+  const { callApi: getAllDestinations } = useGetAllDestination();
+
 
   useEffect(() => {
-    // Fetch tours from backend API
-    fetch("/api/tours")
-      .then((res) => res.json())
-      .then((data) => setTours(data));
-  }, []);
-
-  const onSubmit = (data) => {
-    if (editingTour) {
-      // Update tour
-      fetch(`/api/tours/${editingTour._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          toast.success("Tour updated successfully");
-          setOpen(false);
-          setEditingTour(null);
-          reset();
-        });
-    } else {
-      // Add new tour
-      fetch("/api/tours", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          toast.success("Tour added successfully");
-          setOpen(false);
-          reset();
-        });
+    const fetchAllDestinations = async () => {
+      const res = await getAllDestinations();
+      if (res) {
+        dispatch(setDestinations(res.destinations));
+      }
     }
-  };
+    fetchAllDestinations();
+  }, [])
 
-  const handleEdit = (tour) => {
-    setEditingTour(tour);
-    setOpen(true);
-    reset(tour);
-  };
 
-  const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete this tour?")) {
-      fetch(`/api/tours/${id}`, { method: "DELETE" })
-        .then(() => toast.success("Tour deleted successfully"))
-        .catch(() => toast.error("Failed to delete tour"));
+  const handleDelete = async (id) => {
+
+    const res = await DeleteDestination(id);
+    if (res) {
+      console.log(res.message);
+      dispatch(removeDestinationFromStore(id));
     }
   };
 
   return (
     <div className="p-6">
+      <div className="flex p-2 items-center gap-1 cursor-pointer hover:bg-gray-100 w-fit mb-2" onClick={() => navigate(-1)}>
+        <FaArrowLeftLong />
+        <span className="font-medium">Dashboard</span>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>Manage Tours</CardTitle>
         </CardHeader>
         <CardContent>
-          <Button onClick={() => { setOpen(true); setEditingTour(null); reset(); }}>Add New Tour</Button>
+          <Button onClick={() => navigate('/admin/manage-tour/add')}>Add New Tour</Button>
           <Table className="mt-4">
             <TableHeader>
               <TableRow>
                 <TableHead>Package Name</TableHead>
                 <TableHead>Destination Type</TableHead>
-                <TableHead>Start City</TableHead>
-                <TableHead>End City</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Duration</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tours.map((tour) => (
+              {destinations?.map((tour) => (
                 <TableRow key={tour._id}>
                   <TableCell>{tour.packageName}</TableCell>
                   <TableCell>{tour.DestinationType}</TableCell>
-                  <TableCell>{tour.startCity}</TableCell>
-                  <TableCell>{tour.endCity}</TableCell>
+                  <TableCell>{tour.currSymbol}{tour.twoPaxOccupancy}</TableCell>
+                  <TableCell>{tour.noOfDays} Days / {tour.noOfNights} Nights</TableCell>
                   <TableCell>
-                    <Button onClick={() => handleEdit(tour)}>Edit</Button>
+                    <Button onClick={() => navigate(`/admin/manage-tour/update/${tour._id}`)}>Edit</Button>
                     <Button variant="destructive" onClick={() => handleDelete(tour._id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
@@ -101,34 +81,7 @@ export default function ManageTours() {
           </Table>
         </CardContent>
       </Card>
-      
-      {/* Add / Edit Tour Dialog */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingTour ? "Edit Tour" : "Add New Tour"}</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <Label htmlFor="packageName">Package Name *</Label>
-              <Input id="packageName" {...register("packageName", { required: true })} />
-            </div>
-            <div>
-              <Label htmlFor="DestinationType">Destination Type *</Label>
-              <Input id="DestinationType" {...register("DestinationType", { required: true })} />
-            </div>
-            <div>
-              <Label htmlFor="startCity">Start City *</Label>
-              <Input id="startCity" {...register("startCity", { required: true })} />
-            </div>
-            <div>
-              <Label htmlFor="endCity">End City *</Label>
-              <Input id="endCity" {...register("endCity", { required: true })} />
-            </div>
-            <Button type="submit">{editingTour ? "Update" : "Add"}</Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+
     </div>
   );
 }

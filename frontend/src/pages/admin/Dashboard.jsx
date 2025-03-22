@@ -1,6 +1,7 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { FaChartPie, FaPlaneDeparture, FaUser, FaCog } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const tourData = [
   { id: 1, name: "South India", duration: "6 Nights / 7 Days", bookings: 120 },
@@ -15,6 +16,9 @@ const dashboardStats = [
 ];
 
 const AdminDashboard = () => {
+
+    const navigate = useNavigate();
+
   return (
     <div className="flex bg-gray-100">
       {/* Sidebar */}
@@ -22,9 +26,10 @@ const AdminDashboard = () => {
         <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
         <nav className="flex-1">
           <ul className="space-y-4">
-            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer">Dashboard</li>
-            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer">Manage Tours</li>
-            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer">Bookings</li>
+            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={()=> navigate('/admin')}>Dashboard</li>
+            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={()=> navigate('/admin/manage-tour')}>Manage Tours</li>
+            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={()=> navigate('/admin/manage-tours-packages')}>Manage Tours Packages</li>
+            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={()=> navigate('/admin/enquiry')}>Enquiry</li>
             <li className="hover:bg-blue-700 p-2 rounded cursor-pointer">Users</li>
           </ul>
         </nav>
