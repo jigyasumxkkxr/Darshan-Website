@@ -16,11 +16,44 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Autoplays from "embla-carousel-autoplay"
-import { tour_packages1, tour_packages2, tour_packages3, tour_packages4, tour_packages5, tour_packages6 } from "./tourPackages"
-import { destinations } from "./destinations"
+import { useGetAllTourPackages } from "@/hooks/tourPackages.hook"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setTourPackages } from "@/store/tourPackagesSlice"
+import { useGetAllDestination } from "@/hooks/destination.hook"
+import { setDestinations } from "@/store/destinationSlice"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Home() {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { tourPackages } = useSelector(state => state.tourPackages);
+  const { destinations } = useSelector(state => state.destination);
+
+  const { loading: tourLoading, callApi: getAllTourPackages } = useGetAllTourPackages();
+  const { loading: desLoading, callApi: getDestinations } = useGetAllDestination();
+
+  useEffect(() => {
+
+    const fetchAllTourPackages = async () => {
+      const res = await getAllTourPackages();
+      if (res) {
+        dispatch(setTourPackages(res.data));
+      }
+    }
+    fetchAllTourPackages();
+
+    const fetchDestinations = async () => {
+      const res = await getDestinations();
+      if (res) {
+        dispatch(setDestinations(res.destinations));
+      }
+    }
+    fetchDestinations();
+
+  }, []);
 
   const images = [
     {
@@ -84,7 +117,7 @@ export default function Home() {
         <div className="">
           <div className="text-center mb-10">
             <h2 className="text-4xl font-semibold mb-2">
-              Explore <span style={{ fontFamily: 'Brush Script MT' }} className="text-blue-600 font-script">Top Pilgrimage</span> Sites of India
+              Explore <span style={{ fontFamily: 'Brush Script MT' }} className="text-[#125296] font-script">Top Pilgrimage</span> Sites of India
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto">
               Discover the spiritual heart of India by exploring its top pilgrimage sites like never before
@@ -99,11 +132,11 @@ export default function Home() {
             }),
           ]}>
             <CarouselContent className="-ml-1">
-              {[tour_packages1, tour_packages2, tour_packages3, tour_packages4, tour_packages5, tour_packages6].map((tour_package, index) => (
+              {tourPackages?.map((tour_package, index) => (
                 <CarouselItem key={index} className="pl-1 md:basis-1/3 lg:basis-1/4">
-                  <div className="p-3">
-                    <img src={tour_package.Destinations[0].packageImgUrl} alt="" className="rounded-xl h-56 w-96 " />
-                    <h2 className="text-lg font-semibold flex justify-center">{tour_package.Destinations[0].packageName}</h2>
+                  <div className="p-3 cursor-pointer" onClick={() => navigate(`/tour-packages/${tour_package?.Heading}`)}>
+                    <img src={(tour_package?.Destinations[index] || tour_package?.Destinations[0])?.packageImgUrl} alt="" className="rounded-xl h-56 w-96 " />
+                    <h2 className="text-lg font-semibold flex justify-center">{tour_package?.Heading}</h2>
                   </div>
                 </CarouselItem>
               ))}
@@ -124,19 +157,74 @@ export default function Home() {
 
       <section className="bg-blue-50 py-12 px-6 text-center flex flex-col items-center">
         <h2 className="text-3xl font-bold mb-2">
-          Start Journey to Enlightenment With <span className="text-blue-500 italic">Most Sought Tours</span>
+          Start Journey to Enlightenment With{" "}
+          <span
+            style={{ fontFamily: "Brush Script MT" }}
+            className="text-[#125296]"
+          >
+            Most Sought Tours
+          </span>
         </h2>
-        <p className="text-gray-700 mb-8">
-          Embark on an unparalleled odyssey of spirituality with our specially-curated tour packages
+        <p className="text-gray-700 mb-8 max-w-md">
+          Embark on an unparalleled odyssey of spirituality with our specially curated tour packages.
         </p>
-        <div className="grid grid-cols-6 grid-rows-2 h-[50vh] w-[70vw] gap-6">
-          <img src={destinations[0].packageImgUrl} className="rounded-xl brightness-75 col-span-2 w-full h-full" alt="" />
-          <img src={destinations[0].packageImgUrl} className="rounded-xl brightness-75 col-span-2 row-span-2 w-full h-full" alt="" />
-          <img src={destinations[0].packageImgUrl} className="rounded-xl brightness-75 col-span-2 w-full h-full" alt="" />
-          <img src={destinations[0].packageImgUrl} className="rounded-xl brightness-75 col-span-2 w-full h-full" alt="" />
-          <img src={destinations[0].packageImgUrl} className="rounded-xl brightness-75 col-span-2 w-full h-full" alt="" />
+
+        {/* Responsive Grid: Medium & Large Screens */}
+        <div className="hidden sm:grid grid-cols-6 grid-rows-2 gap-4 w-full max-w-screen-lg h-[50vh]">
+          {destinations?.slice(0, 5).map((destination, index) => (
+            <div
+              key={destination?._id}
+              className={`relative group cursor-pointer rounded-xl col-span-2 bg-cover bg-center transition-transform duration-300 ease-in-out hover:scale-105 ${index === 1 ? "row-span-2" : ""
+                }`}
+              style={{
+                backgroundImage: `url(${destination?.packageImgUrl})`,
+                filter: "brightness(90%)", // Initial brightness at 90%
+              }}
+              onClick={() => navigate(`/destination-tour/${destination?._id}`)}
+            >
+              {/* Overlay (Darker on hover) */}
+              <div className="absolute inset-0 bg-black bg-opacity-25 rounded-xl transition-opacity duration-300 group-hover:bg-opacity-50"></div>
+
+              {/* Text (Hidden initially, appears on hover) */}
+              <div className="absolute bottom-4 left-4 text-white transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                <h2 className="text-lg font-bold">{destination?.packageName}</h2>
+                <p className="text-md">
+                  Price: {destination?.currSymbol}
+                  {destination?.twoPaxOccupancy}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Small Screens: Stack Images Vertically */}
+        <div className="sm:hidden flex flex-col gap-4 w-full max-w-xs">
+          {destinations?.slice(0, 5).map((destination) => (
+            <div
+              key={destination?._id}
+              className="relative group cursor-pointer rounded-xl w-full h-[40vh] bg-cover bg-center transition-transform duration-300 ease-in-out hover:scale-105"
+              style={{
+                backgroundImage: `url(${destination?.packageImgUrl})`,
+                filter: "brightness(90%)",
+              }}
+              onClick={() => navigate(`/destination-tour/${destination?._id}`)}
+            >
+              {/* Overlay (Darker on hover) */}
+              <div className="absolute inset-0 bg-black bg-opacity-25 rounded-xl transition-opacity duration-300 group-hover:bg-opacity-50"></div>
+
+              {/* Text (Hidden initially, appears on hover) */}
+              <div className="absolute bottom-4 left-4 text-white transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                <h2 className="text-lg font-bold">{destination?.packageName}</h2>
+                <p className="text-md">
+                  Price: {destination?.currSymbol}
+                  {destination?.twoPaxOccupancy}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
+
 
       <section className="relative h-72 my-10">
         <div className="absolute inset-0 z-0">
@@ -149,15 +237,15 @@ export default function Home() {
             modules={[Autoplay, Pagination]}
             className="h-full"
           >
-            {[tour_packages1, tour_packages2, tour_packages3, tour_packages4].map((item, index) => (
+            {tourPackages?.map((item, index) => (
               <SwiperSlide key={index} className=" ">
-                <div className="h-72 w-[80vw] mx-auto relative">
+                <div className="h-72 w-[80vw] mx-auto relative cursor-pointer" onClick={() => navigate(`/tour-packages/${item?.Heading}`)}>
                   <div className="absolute mt-16 ml-6 z-10">
                     <h2 style={{ fontFamily: 'Brush Script MT' }} className="text-5xl text-gray-200">Spritual Peace</h2>
-                    <h2 className="text-3xl font-bold mt-4 text-gray-200">{item.Heading}</h2>
-                    <span className="text-gray-100">Starting from <span className="text-xl font-bold ml-4">{item.Destinations[0].currSymbol}{item.Destinations[0].twoPaxOccupancy}</span></span>
+                    <h2 className="text-3xl font-bold mt-4 text-gray-200">{item?.Heading}</h2>
+                    <span className="text-gray-100">Starting from <span className="text-xl font-bold ml-4">{item?.Destinations[0]?.currSymbol}{item?.Destinations[0]?.twoPaxOccupancy}</span></span>
                   </div>
-                  <img src={item.Destinations[0].packageImgUrl} alt='banner-image' className="object-cover h-72 w-[80vw] mb-4 rounded-2xl mx-auto brightness-50" />
+                  <img src={(item?.Destinations[index] || item?.Destinations[0])?.packageImgUrl} alt='banner-image' className="object-cover h-72 w-[80vw] mb-4 rounded-2xl mx-auto brightness-50" />
                 </div>
               </SwiperSlide>
             ))}
@@ -171,7 +259,7 @@ export default function Home() {
         <div className="">
           <div className="text-center mb-10">
             <h2 className="text-4xl font-semibold mb-2">
-              Special <span style={{ fontFamily: 'Brush Script MT' }} className="text-blue-600 font-script">Pooja</span>
+              Special <span style={{ fontFamily: 'Brush Script MT' }} className="text-[#125296] font-script">Pooja</span>
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto">
               Manifest peace, prosperity and enlightenment in your life with our sacred poojas and hawans.
@@ -185,15 +273,25 @@ export default function Home() {
               delay: 2000,
             }),
           ]}>
-            <CarouselContent className="-ml-1">
-              {destinations?.map((destination, index) => (
-                <CarouselItem key={index} className="pl-1 md:basis-1/3 lg:basis-1/4 relative">
-                  <div className="p-3">
-                    <img src={destination.packageImgUrl} alt="" className="rounded-xl h-56 w-96 " />
-                    <h2 className="text-lg font-semibold flex justify-center">{destination.packageName}</h2>
-                  </div>
-                </CarouselItem>
-              ))}
+            <CarouselContent className="-ml-1 flex">
+              {destinations?.map((destination, index) =>
+                destination?.DestinationType === "Pooja" ? (
+                  <CarouselItem
+                    key={index}
+                    className="pl-1 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 relative cursor-pointer"
+                    onClick={() => navigate(`/destination-tour/${destination?._id}`)}
+                  >
+                    <div className="p-3 flex flex-col items-center">
+                      <img
+                        src={destination?.packageImgUrl}
+                        alt=""
+                        className="rounded-xl h-56 w-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                      <h2 className="text-lg font-semibold text-center mt-2">{destination?.packageName}</h2>
+                    </div>
+                  </CarouselItem>
+                ) : null
+              )}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
@@ -204,32 +302,32 @@ export default function Home() {
 
       <section className="w-full mx-auto px-6 py-12 text-center bg-[#ebf3f4]">
         <h2 className="text-4xl font-semibold">Why Plan Your <span style={{ fontFamily: 'Brush Script MT' }} className="text-[#5dcce8]">Sacred Tours</span> With Us?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-16 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-16 max-w-6xl mx-auto">
           <div className="flex flex-col items-center">
             <img className="size-16" src="https://easydarshan.com/Content/home-page/img/resnble.svg" alt="emt offer1" />
             <h4 className="text font-semibold ft-600 mt-15">Reasonable Prices</h4>
-            <p class="text mt-2"></p>
+            <p className="text mt-2"></p>
             Get Unique Darshan packages at cost-effective prices like never before.
             <p></p>
           </div>
           <div className="flex flex-col items-center">
             <img className="size-16" src="https://easydarshan.com/Content/home-page/img/instant.svg" alt="emt offer2" />
             <h4 className="text font-semibold ft-600 mt-15">Instant Bookings</h4>
-            <p class="text mt-2"></p>
+            <p className="text mt-2"></p>
             Enjoy Fast-paced booking on your desired destination with ease.
             <p></p>
           </div>
           <div className="flex flex-col items-center">
             <img className="size-16" src="https://easydarshan.com/Content/home-page/img/guide.svg" alt="emt offer3" />
             <h4 className="text font-semibold ft-600 mt-15">Guided tours</h4>
-            <p class="text mt-2"></p>
+            <p className="text mt-2"></p>
             Have personalised travelling experience with additional guide assistance.
             <p></p>
           </div>
           <div className="flex flex-col items-center">
             <img className="size-16" src="https://easydarshan.com/Content/home-page/img/suprt.svg" alt="emt offer4" />
             <h4 className="text font-semibold ft-600 mt-15">24/7 Customer Support</h4>
-            <p class="text mt-2"></p>
+            <p className="text mt-2"></p>
             GConnect with our experts and get 24/7 continuous guidance on your tour package.
             <p></p>
           </div>

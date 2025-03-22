@@ -6,10 +6,9 @@ export const addTourPackage = async (req, res) => {
     try {
         const { Heading, Description, Destinations, Details, FAQ } = req.body;
         const admin = req.user;
-
-        if(!admin || admin.role !== 'admin' || !admin.is_verified) {
-            return res.status(401).json({success:false,  message: 'Unauthorized to perform this action' });
-        }
+        if (!admin || !admin.role === 'admin' || !admin.is_verified) {
+            return res.status(401).json({success:false, message: 'You are not authorized to perform this action ' });
+        } 
 
         if(!Heading || Destinations.length === 0) {
             return res.status(400).json({success:false,  message: 'Heading and Destination are required' });
@@ -34,7 +33,7 @@ export const addTourPackage = async (req, res) => {
 // ✅ Get all tour packages
 export const getAllTourPackages = async (req, res) => {
     try {
-        const tourPackages = await DestinationTourPackages.find().populate('Destinations', 'packageImgUrl');
+        const tourPackages = await DestinationTourPackages.find().populate('Destinations');
         res.status(200).json({ success: true, data: tourPackages });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error fetching tour packages", error: error.message });

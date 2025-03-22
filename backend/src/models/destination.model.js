@@ -83,6 +83,7 @@ const DestinationSchema = new mongoose.Schema({
         {
             prference: Number,
             img: String,
+            imgPublicId:String,
             id: Number,
             code: String
         }

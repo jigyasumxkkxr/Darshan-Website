@@ -6,7 +6,7 @@ const fetchAPI = async(url , method = 'GET', body = null) => {
     };
 
     try {
-        const response = await fetch(`${baseURL}/api/enquiry${url}`, {
+        const response = await fetch(`${baseURL}/api/destination-tour-packages${url}`, {
             method,
             headers,
             body: body ? JSON.stringify(body) : null,
@@ -17,23 +17,22 @@ const fetchAPI = async(url , method = 'GET', body = null) => {
         if(!response.ok) {
             throw new Error(data.message || 'Failed to fetch');
         }
-
+        
         if(data.success) {
             return data;
         }
 
     } catch (error) {
         alert(error.message);
+        throw new Error(error.message);
     }
 }
 
 
 
-//Enquiry APIs 
+//Tour Packages API
 
-export const addEnquiry = (data) => fetchAPI('/add', 'POST', data);
-export const getEnquiryById = (id) => fetchAPI(`/get/${id}`);
-export const getAllEnquiry = () => fetchAPI('/getall');
-export const getUserEnquiry = () => fetchAPI('/user/all');
-export const updateEnquiryStatus = (id, data) => fetchAPI(`/update/${id}`, 'PUT', data);
-export const deleteEnquiry = (id) => fetchAPI(`/delete/${id}`, 'DELETE');
+export const addTourPackages = (data) => fetchAPI('/add', 'POST', data);
+export const getAllTourPackages = () => fetchAPI('/all');
+export const getTourPackagesById = (id) => fetchAPI(`/get/${id}`);
+export const removeTourPackages = (id) => fetchAPI(`/remove/${id}`, 'DELETE');

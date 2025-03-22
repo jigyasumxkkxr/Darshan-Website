@@ -10,19 +10,24 @@ import { RxCross2 } from "react-icons/rx";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { ImClock, ImLocation } from "react-icons/im";
 import Footer from './footer';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 
-export default function TourPackage({destination}) {
+export default function TourPackage() {
 
+    const {destinations} = useSelector(state=>state.destination);
+    const {id} = useParams();
+    const destination = destinations.filter(des=> des._id === id)[0];
 
     return (
         <div className='w-full relative'>
             <Header />
             <div className='w-full lg:flex justify-center scrollbar-hidden'>
                 <div className='mt-12 lg:max-w-[819px] '>
-                    <h1 className='text-xl md:text-[30px] font-semibold inline'>{destination.packageName}</h1>
-                    <span className='font-bold ml-4 text-sm'>{destination.noOfNights} Nights / {destination.noOfDays} Days</span>
-                    <p className='text-sm '>{destination.stayCity}</p>
+                    <h1 className='text-xl md:text-[30px] font-semibold inline'>{destination?.packageName}</h1>
+                    <span className='font-bold ml-4 text-sm'>{destination?.noOfNights} Nights / {destination?.noOfDays} Days</span>
+                    <p className='text-sm '>{destination?.stayCity}</p>
                     <Swiper
                         spaceBetween={10}
                         slidesPerView={1}
@@ -32,7 +37,7 @@ export default function TourPackage({destination}) {
                         modules={[Autoplay, Pagination]}
                         className=""
                     >
-                        {destination.gallaryImg.map((item, index) => (
+                        {destination?.gallaryImg.map((item, index) => (
                             <SwiperSlide key={index} className="flex flex-col items-center justify-center text-center mt-2">
                                 <img src={item.img} className="rounded-md mx-2 lg:mx-0 w-full sm:w-[90vw] lg:w-full h-[60vh] lg:h-[380px] mb-4" />
                             </SwiperSlide>
@@ -48,7 +53,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='overview'>
                         {
-                            destination.overview ?
+                            destination?.overview ?
                                 <div className='py-4 mt-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Package Overview</h2>
                                     <p className='px-4 text-sm mt-4 font-serif'>{destination.overview}</p>
@@ -57,7 +62,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='hotel'>
                         {
-                            destination.hotels.length !== 0 ?
+                            destination?.hotels.length !== 0 ?
                                 <div className='py-4 mt-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Hotel Details</h2>
                                     {
@@ -85,12 +90,12 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='itinerary'>
                         {
-                            destination.isTableItinerary ?
+                            destination?.tableItinerary?.Itinerarys?.length > 0 ?
                                 <div className='py-4 mt-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Day Wise Itinerary</h2>
                                     <div className='p-6'>
                                         {
-                                            destination.tableItinerary.Itinerarys.map((item, index) => {
+                                            destination?.tableItinerary.Itinerarys.map((item, index) => {
                                                 return (
                                                     <div key={index} className="relative flex gap-4 pb-6">
                                                         {/* Timeline Line */}
@@ -131,7 +136,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div className='flex flex-col md:flex-row gap-4' id='inclusion/exclusion'>
                         {
-                            destination.inclusion.length !== 0 ?
+                            destination?.inclusion.length !== 0 ?
                                 <div className='border border-gray-300 shadow-lg md:w-1/2 mt-4 py-4 bg-[#d5f4df] rounded-lg'>
                                     <h2 className='text-xl px-6 font-bold border-l-4 border-[#5fba7f]'>Inclusions</h2>
                                     {
@@ -147,7 +152,7 @@ export default function TourPackage({destination}) {
                                 </div> : null
                         }
                         {
-                            destination.exclusion.length !== 0 ?
+                            destination?.exclusion.length !== 0 ?
                                 <div className='border border-gray-300 shadow-lg md:w-1/2 mt-4 py-4 bg-[#f9e0d6] rounded-lg'>
                                     <h2 className='text-xl px-6 font-bold border-l-4 border-red-500'>Exclusions</h2>
                                     {
@@ -165,7 +170,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='term_condition'>
                         {
-                            destination.term_Condition.length !== 0 ?
+                            destination?.term_Condition.length !== 0 ?
                                 <div className='py-4 mt-4 mb-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Term & Conditions</h2>
                                     <div className='p-6'>
@@ -214,7 +219,7 @@ export default function TourPackage({destination}) {
                                 <div>
                                     <span className='block text-sm font-semibold text-gray-800'>Starting from</span>
                                     {
-                                        destination.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-lg'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
+                                        destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-lg'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
                                     }
                                     <p className='flex items-center gap-2'> <span className=' text-3xl font-bold'>{destination.currSymbol}{destination.twoPaxOccupancy}</span><span className='text-xs font-semibold'>Per Person</span></p>
                                 </div>
@@ -234,7 +239,7 @@ export default function TourPackage({destination}) {
                                 <span className='flex justify-center text-xs font-semibold my-4 border-b'>Package Includes</span>
                                 <div className='flex gap-4'>
                                     {
-                                        destination.packageIncludes.map((item, index) => {
+                                        destination?.packageIncludes.map((item, index) => {
                                             return (
                                                 <div>
                                                     {

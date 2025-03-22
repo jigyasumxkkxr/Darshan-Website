@@ -1,6 +1,5 @@
 import { Destination } from "../models/destination.model.js";
 import sharp from "sharp";
-import cloudinary from "../utils/cloudinary.js";
 
 export const addDestination = async (req, res) => {
     try {

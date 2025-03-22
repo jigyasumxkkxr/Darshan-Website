@@ -13,10 +13,10 @@ const router = express.Router();
 
 
 router.post("/add", isAuthenticated, addDestination);
-router.get("/getall",isAuthenticated, getDestinations);
-router.get("/get/:id",isAuthenticated, getDestination);
+router.get("/getall", getDestinations);
+router.get("/get/:id", getDestination);
 router.delete("/delete/:id", isAuthenticated, removeDestination);
 router.route('/update/:id').put(isAuthenticated, updateDestination);
-router.route('/search').post(isAuthenticated, searchDestination);
+router.route('/search').post(searchDestination);
 
 export default router;

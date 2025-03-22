@@ -1,19 +1,23 @@
 import React from 'react'
 import { FaHandHoldingUsd } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 export default function PackageCard({destination}) {
+
+    const navigate = useNavigate();
+
     return (
-        <div className='max-w-[370px] border-2 md:border hover:shadow-2xl relative bg-white'>
-            <img src={destination.packageImgUrl} alt="" className='w-full h-[190px] object-cover' />
+        <div className='max-w-[370px] border-2 md:border hover:shadow-2xl relative bg-white cursor-pointer' onClick={()=>navigate(`/destination-tour/${destination._id}`)}>
+            <img src={destination?.packageImgUrl} alt="" className='w-full h-[190px] object-cover' />
             <div className='p-3'>
-                <h3 className='text-lg font-semibold'>{destination.packageName}</h3>
-                <p className='text-xs mb-6'>{destination.stayCity}</p>
+                <h3 className='text-lg font-semibold'>{destination?.packageName}</h3>
+                <p className='text-xs mb-6'>{destination?.stayCity}</p>
                 <hr />
                 <div className='flex gap-4 mt-6 mb-6'>
                     {
-                        destination.packageIncludes.map((item, index) => {
+                        destination?.packageIncludes.map((item, index) => {
                             return (
-                                <div>
+                                <div key={index}>
                                     {
                                         item.Name === 'Hotel' && <div className='flex flex-col gap-1 items-center'><img src="https://www.easemytrip.com/holidays/Content/customize/img/hotel-1.svg" alt="Hotel" /><p className='text-xs text-gray-700'>{item.Name}</p></div>
                                     }
@@ -37,7 +41,7 @@ export default function PackageCard({destination}) {
                     <div className=''>
                         <span className='block text-xs text-gray-800'>Starting from</span>
                         {
-                            destination.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-sm font-bold'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
+                            destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-sm font-bold'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
                         }
                         <p className='flex items-center gap-2'> <span className=' text-2xl font-bold'>{destination.currSymbol}{destination.twoPaxOccupancy}</span></p>
                         <span className='text-xs'>per person on twin sharing</span>
