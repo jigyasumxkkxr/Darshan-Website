@@ -1,2 +1,2 @@
-const baseURL = 'https://darshan-website-backend.onrender.com';
+const baseURL = 'https://darshan-website.onrender.com';
 export default baseURL;
