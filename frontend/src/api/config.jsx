@@ -1,2 +1,2 @@
-const baseURL = 'http://localhost:8144';
+const baseURL = 'https://darshan-website-backend.onrender.com';
 export default baseURL;

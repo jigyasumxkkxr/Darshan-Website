@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 8000;
 
 //Middlewares
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://darshan-website.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials:true
 }));

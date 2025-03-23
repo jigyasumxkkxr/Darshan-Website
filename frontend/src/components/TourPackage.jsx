@@ -9,10 +9,10 @@ import { FaCheck } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { ImClock, ImLocation } from "react-icons/im";
-import Footer from './footer';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import EnquiryForm from './EnquiryForm';
+import Footer from './Footer';
 
 
 export default function TourPackage() {
