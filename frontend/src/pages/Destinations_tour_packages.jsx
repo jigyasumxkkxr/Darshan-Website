@@ -1,4 +1,4 @@
-import Footer from '@/components/footer'
+import Footer from '@/components/Footer'
 import Header from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

@@ -3,7 +3,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, Image, MessageSquare, Search } from "lucide-react"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Footer from "@/components/Footer"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
