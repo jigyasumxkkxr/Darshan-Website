@@ -46,7 +46,7 @@ export const getAllEnquiries = async (req, res) => {
             return res.status(401).json({success:false, message: "Unauthorized to perform this action" });
         }
 
-        const enquiries = await Enquiry.find().populate("user", "name email");
+        const enquiries = await Enquiry.find().populate("user", "name email mobile");
         return res.status(200).json({success:true, enquiries});
     } catch (error) {
         console.error(error);

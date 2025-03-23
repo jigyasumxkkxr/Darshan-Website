@@ -5,9 +5,10 @@ import { FaBars, FaTimes, FaRegUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Login from "./UserAuthentication";
 import logo from "@/assets/image.png"; // Corrected import
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isTokenExpired } from "@/lib/isTokenExpired";
 import { useLogout } from "@/hooks/user.hook";
+import { setAuth, setToken } from "@/store/authSlice";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -16,12 +17,15 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const {user, token} = useSelector(state => state.auth);
   const {callApi: Logout} = useLogout();
+  const dispatch = useDispatch();
 
 
   const handleLogout = async() => {
       const res = await Logout();
       if(res) {
         console.log(res.message);
+        dispatch(setAuth(null));
+        dispatch(setToken(null));
       }
   }
 
@@ -68,28 +72,28 @@ export default function Header() {
           </DropdownMenu>
 
           {/* Login Dropdown */}
-          <DropdownMenu open={open} onOpenChange={setOpen}>
-            <DropdownMenuTrigger asChild>
-              {
-                (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
-                <Button
-                className="relative bg-blue-500 hover:bg-blue-600 rounded-full font-semibold text-white text-[13px]"
-                onMouseEnter={() => setOpen(true)}
-              >
-                Login or Signup
-              </Button>:
-              <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
-              }
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="pr-10" onMouseLeave={() => setOpen(false)}>
-              <DropdownMenuItem onClick={() => { setOpenLogin(true); setAction('login') }}>
-                <div className="flex items-center gap-3 p-2">
-                  <FaRegUser size={20} />
-                  <span className="font-medium">Customer Login</span>
-                </div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {
+            (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
+            <DropdownMenu open={open} onOpenChange={setOpen}>
+              <DropdownMenuTrigger asChild>          
+                  <Button
+                  className="relative bg-blue-500 hover:bg-blue-600 rounded-full font-semibold text-white text-[13px]"
+                  onMouseEnter={() => setOpen(true)}
+                >
+                  Login or Signup
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="pr-10" onMouseLeave={() => setOpen(false)}>
+                <DropdownMenuItem onClick={() => { setOpenLogin(true); setAction('login') }}>
+                  <div className="flex items-center gap-3 p-2">
+                    <FaRegUser size={20} />
+                    <span className="font-medium">Customer Login</span>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>:
+            <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
+          }
         </div>
 
         {/* Mobile Menu Button */}

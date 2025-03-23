@@ -71,7 +71,7 @@ export default function ManageTours() {
                   <TableCell>{tour.DestinationType}</TableCell>
                   <TableCell>{tour.currSymbol}{tour.twoPaxOccupancy}</TableCell>
                   <TableCell>{tour.noOfDays} Days / {tour.noOfNights} Nights</TableCell>
-                  <TableCell>
+                  <TableCell className='flex gap-1'>
                     <Button onClick={() => navigate(`/admin/manage-tour/update/${tour._id}`)}>Edit</Button>
                     <Button variant="destructive" onClick={() => handleDelete(tour._id)}>Delete</Button>
                   </TableCell>
