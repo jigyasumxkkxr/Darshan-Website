@@ -17,12 +17,13 @@ import {
 } from "@/components/ui/carousel"
 import Autoplays from "embla-carousel-autoplay"
 import { useGetAllTourPackages } from "@/hooks/tourPackages.hook"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setTourPackages } from "@/store/tourPackagesSlice"
 import { useGetAllDestination } from "@/hooks/destination.hook"
 import { setDestinations } from "@/store/destinationSlice"
 import { useNavigate } from "react-router-dom"
+import EnquiryForm from "@/components/EnquiryForm"
 
 
 export default function Home() {
@@ -31,7 +32,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { tourPackages } = useSelector(state => state.tourPackages);
   const { destinations } = useSelector(state => state.destination);
-
+  const [open, setOpen] = useState(false);
   const { loading: tourLoading, callApi: getAllTourPackages } = useGetAllTourPackages();
   const { loading: desLoading, callApi: getDestinations } = useGetAllDestination();
 
@@ -146,10 +147,10 @@ export default function Home() {
           </Carousel>
 
           {/* Plan Trip Button */}
-          <div className="fixed bottom-8 right-8 z-20">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg">
+          <div className="fixed bottom-8 right-8 z-20" onClick={()=>setOpen(true)}>
+            <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg" >
               <MessageSquare className="h-5 w-5" />
-              Plan Your Trip
+              Plan Your Trip 
             </Button>
           </div>
         </div>
@@ -339,7 +340,7 @@ export default function Home() {
       </section>
 
 
-
+      <EnquiryForm open={open} setOpen={setOpen} />
       <Footer />
     </div>
   )

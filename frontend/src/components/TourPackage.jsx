@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from './header'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -12,11 +12,13 @@ import { ImClock, ImLocation } from "react-icons/im";
 import Footer from './footer';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import EnquiryForm from './EnquiryForm';
 
 
 export default function TourPackage() {
 
     const {destinations} = useSelector(state=>state.destination);
+    const [open, setOpen] = useState(false);
     const {id} = useParams();
     const destination = destinations.filter(des=> des._id === id)[0];
 
@@ -142,7 +144,7 @@ export default function TourPackage() {
                                     {
                                         destination.inclusion.map((item, index) => {
                                             return (
-                                                <div className='px-6'>
+                                                <div key={index} className='px-6'>
                                                     <FaCheck className='inline' color='#5fba7f' size={10} />
                                                     <p className='text-sm font-serif inline ml-2'>{item.inclussion}</p>
                                                 </div>
@@ -158,7 +160,7 @@ export default function TourPackage() {
                                     {
                                         destination.exclusion.map((item, index) => {
                                             return (
-                                                <div className='px-6'>
+                                                <div key={index} className='px-6'>
                                                     <RxCross2 className='inline' color='red' size={10} />
                                                     <p className='text-sm font-serif inline ml-2'>{item.exclussion}</p>
                                                 </div>
@@ -195,7 +197,7 @@ export default function TourPackage() {
                                                                 {
                                                                     item.list &&
                                                                     item.list.map((listItem, index) =>
-                                                                        <li>{listItem}</li>
+                                                                        <li key={index}>{listItem}</li>
                                                                     )
                                                                 }
                                                             </ul>
@@ -241,7 +243,7 @@ export default function TourPackage() {
                                     {
                                         destination?.packageIncludes.map((item, index) => {
                                             return (
-                                                <div>
+                                                <div key={index}>
                                                     {
                                                         item.Name === 'Hotel' && <div className='flex flex-col gap-1 items-center'><img src="https://www.easemytrip.com/holidays/Content/customize/img/hotel-1.svg" alt="Hotel" /><p className='text-xs text-gray-700'>{item.Name}</p></div>
                                                     }
@@ -260,7 +262,7 @@ export default function TourPackage() {
                                         })
                                     }
                                 </div>
-                                <button className='w-full border border-[#125296] mr-2 py-3 text-sm rounded-full mt-6 mb-2 text-[#125296] hover:bg-blue-50 font-bold'>ENQUIRY NOW</button>
+                                <button className='w-full border border-[#125296] mr-2 py-3 text-sm rounded-full mt-6 mb-2 text-[#125296] hover:bg-blue-50 font-bold' onClick={() => setOpen(true) }>ENQUIRY NOW</button>
                             </section>
                         </div>
                         <div className="flex items-center gap-4 p-4 border rounded-lg shadow-sm bg-gray-100 w-fit ml-6">
@@ -293,6 +295,7 @@ export default function TourPackage() {
                     <button className='py-2 px-6 rounded-full bg-blue-500 text-white font-semibold'>Enquiry Now</button>
                 </div>
             </div>
+            <EnquiryForm open={open} setOpen={setOpen} tour={destination} />
             <Footer />
         </div>
     )

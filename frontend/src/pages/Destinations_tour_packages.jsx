@@ -11,13 +11,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import EnquiryForm from '@/components/EnquiryForm'
 
 export default function Destinations_tour_packages() {
 
+  const [open, setOpen] = useState(false);
   const {tourPackages} = useSelector(state=>state.tourPackages);
   const {packName} = useParams();
   const tour_packages = tourPackages.filter((item)=> item.Heading === packName.toString())[0];
-  console.log(tour_packages);
   
 
   return (
@@ -112,6 +113,14 @@ export default function Destinations_tour_packages() {
         <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easydarshan@easemytrip.com</span> |
         <span className="font-bold text-lg"> Contact No:</span> 011 35359999
       </div>
+      <div className='fixed right-0 top-[45vh]' onClick={()=>setOpen(true)}>
+        <div className='flex flex-col items-center justify-center px-1 py-2 md:p-4 rounded-tl-lg rounded-bl-lg cursor-pointer bg-[#d4ebf0] shadow-lg'>
+          <img src="	https://www.easydarshan.com/Content/customize/img/phone-call.svg" className='size-6 sm:size-8 md:size-10 lg:size-12' alt="" />
+          <span className='text-md'>Enquiry</span>
+          <span className='text-md'>Now</span>
+        </div>
+      </div>
+      <EnquiryForm open={open} setOpen={setOpen} />
       <Footer />
     </div>
   )

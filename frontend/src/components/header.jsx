@@ -5,12 +5,25 @@ import { FaBars, FaTimes, FaRegUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Login from "./UserAuthentication";
 import logo from "@/assets/image.png"; // Corrected import
+import { useSelector } from "react-redux";
+import { isTokenExpired } from "@/lib/isTokenExpired";
+import { useLogout } from "@/hooks/user.hook";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [action, setAction] = useState('login');
   const [menuOpen, setMenuOpen] = useState(false);
+  const {user, token} = useSelector(state => state.auth);
+  const {callApi: Logout} = useLogout();
+
+
+  const handleLogout = async() => {
+      const res = await Logout();
+      if(res) {
+        console.log(res.message);
+      }
+  }
 
   return (
     <header className="border-b bg-white">
@@ -57,12 +70,16 @@ export default function Header() {
           {/* Login Dropdown */}
           <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
-              <Button
+              {
+                (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
+                <Button
                 className="relative bg-blue-500 hover:bg-blue-600 rounded-full font-semibold text-white text-[13px]"
                 onMouseEnter={() => setOpen(true)}
               >
                 Login or Signup
-              </Button>
+              </Button>:
+              <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
+              }
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="pr-10" onMouseLeave={() => setOpen(false)}>
               <DropdownMenuItem onClick={() => { setOpenLogin(true); setAction('login') }}>
@@ -91,9 +108,13 @@ export default function Header() {
           <a href="/about-us" className="text-foreground hover:text-primary">About Us</a>
 
           {/* Mobile Login Button */}
-          <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={() => { setOpenLogin(true); setAction('login') }}>
+          {
+            (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
+            <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={() => { setOpenLogin(true); setAction('login') }}>
             Login or Signup
-          </Button>
+          </Button>:
+          <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
+          }
         </nav>
       )}
 

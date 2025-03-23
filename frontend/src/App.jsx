@@ -12,6 +12,9 @@ import UpdateDestinationTour from './components/admin/UpdateTour';
 import ManageToursPackages from './pages/admin/ManageToursPackages';
 import AddPackage from './components/admin/AddToursPackage';
 import EnquiriesPage from './pages/admin/ManageEnquiry';
+import EnquiryForm from './components/EnquiryForm';
+import SignupAdmin from './pages/admin/AdminSignup';
+import LoginAdmin from './pages/admin/AdminLogin';
 
 const browserRouter = createBrowserRouter([
   {
@@ -61,6 +64,14 @@ const browserRouter = createBrowserRouter([
   {
     path: '/admin/enquiry',
     element: <EnquiriesPage />
+  },
+  {
+    path: '/admin/signup',
+    element: <SignupAdmin />
+  },
+  {
+    path:'/admin/login',
+    element: <LoginAdmin />
   }
 ])
 

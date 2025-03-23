@@ -37,7 +37,7 @@ export default function PackageCard({destination}) {
                     }
                 </div>
                 <hr />
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center mb-4'>
                     <div className=''>
                         <span className='block text-xs text-gray-800'>Starting from</span>
                         {
