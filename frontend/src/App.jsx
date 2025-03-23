@@ -15,6 +15,8 @@ import EnquiriesPage from './pages/admin/ManageEnquiry';
 import EnquiryForm from './components/EnquiryForm';
 import SignupAdmin from './pages/admin/AdminSignup';
 import LoginAdmin from './pages/admin/AdminLogin';
+import AdminOTPVerification from './pages/admin/OTPVerification';
+import AdminPotectedRoute from './components/admin/AdminProtectedRoute';
 
 const browserRouter = createBrowserRouter([
   {
@@ -39,31 +41,31 @@ const browserRouter = createBrowserRouter([
   },
   {
     path:'/admin',
-    element:<AdminDashboard />
+    element:<AdminPotectedRoute><AdminDashboard /></AdminPotectedRoute>
   },
   {
     path: '/admin/manage-tour',
-    element: <ManageTours />
+    element: <AdminPotectedRoute><ManageTours /></AdminPotectedRoute>
   },
   {
     path: '/admin/manage-tour/add',
-    element: <AddDestinationTour />
+    element: <AdminPotectedRoute><AddDestinationTour /></AdminPotectedRoute>
   },
   {
     path: '/admin/manage-tour/update/:id',
-    element: <UpdateDestinationTour />
+    element: <AdminPotectedRoute><UpdateDestinationTour /></AdminPotectedRoute>
   },
   {
     path: '/admin/manage-tours-packages',
-    element: <ManageToursPackages />
+    element: <AdminPotectedRoute><ManageToursPackages /></AdminPotectedRoute>
   },
   {
     path: '/admin/manage-tours-packages/add',
-    element: <AddPackage />
+    element: <AdminPotectedRoute><AddPackage /></AdminPotectedRoute>
   },
   {
     path: '/admin/enquiry',
-    element: <EnquiriesPage />
+    element: <AdminPotectedRoute><EnquiriesPage /></AdminPotectedRoute>
   },
   {
     path: '/admin/signup',
@@ -72,6 +74,10 @@ const browserRouter = createBrowserRouter([
   {
     path:'/admin/login',
     element: <LoginAdmin />
+  },
+  {
+    path: '/admin/verify-otp',
+    element: <AdminOTPVerification />
   }
 ])
 

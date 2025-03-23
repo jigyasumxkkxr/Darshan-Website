@@ -28,10 +28,6 @@ const ManageToursPackages = () => {
         fetchAllToursPackages();
     }, [])
 
-    const handleAdd = () => {
-
-    };
-
     
 
     const handleDelete = async(id) => {

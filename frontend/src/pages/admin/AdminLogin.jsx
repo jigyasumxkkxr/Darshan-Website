@@ -1,18 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { useLogin } from "@/hooks/user.hook";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth, setToken } from "@/store/authSlice";
+import { isTokenExpired } from "@/lib/isTokenExpired";
 
 const LoginAdmin = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [loading, setLoading] = useState(false);
+  const {loading, callApi:AdminLogin} = useLogin();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {token} = useSelector(state=> state.auth);
 
   const onSubmit = async (data) => {
-        console.log(data);
-        
+        const res = await AdminLogin(data);
+        if(res) {
+          console.log(res.message);
+          dispatch(setAuth(res.user));
+          dispatch(setToken(res.token));
+          navigate('/admin');
+        }
   };
+
+  useEffect(()=>{
+    if(token && !isTokenExpired(token)) {
+      navigate('/admin');
+    }
+  }, [])
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -38,6 +57,7 @@ const LoginAdmin = () => {
               {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
+          <span className="flex justify-center">Don't have an account? <Link to="/admin/signup" className="text-blue-500 cursor-pointer">Signup</Link></span>
         </CardContent>
       </Card>
     </div>

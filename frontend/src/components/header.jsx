@@ -47,9 +47,9 @@ export default function Header() {
 
         {/* Desktop Navigation (Always Right) */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="/chardham" className="text-foreground hover:text-primary">Chardham</a>
-          <a href="/special-poojas" className="text-foreground hover:text-primary">Special Poojas</a>
-          <a href="/fixed-departure" className="text-foreground hover:text-primary">Fixed Departure</a>
+          <a href="/tour-packages/Chardham" className="text-foreground hover:text-primary">Chardham</a>
+          <a href="/tour-packages/Special Pooja" className="text-foreground hover:text-primary">Special Poojas</a>
+          <a href="/tour-packages/Fixed Departure" className="text-foreground hover:text-primary">Fixed Departure</a>
           <a href="/darshan-kutumb" className="text-foreground hover:text-primary">Darshan Kutumb</a>
           <a href="/about-us" className="text-foreground hover:text-primary">About Us</a>
         </nav>
@@ -105,9 +105,9 @@ export default function Header() {
       {/* Mobile Navigation (Shown when menuOpen is true) */}
       {menuOpen && (
         <nav className="md:hidden flex flex-col items-center bg-white py-4 space-y-4 border-t">
-          <a href="/chardham" className="text-foreground hover:text-primary">Chardham</a>
-          <a href="/special-poojas" className="text-foreground hover:text-primary">Special Poojas</a>
-          <a href="/fixed-departure" className="text-foreground hover:text-primary">Fixed Departure</a>
+          <a href="/tour-packages/Chardham" className="text-foreground hover:text-primary">Chardham</a>
+          <a href="/tour-packages/Special Pooja" className="text-foreground hover:text-primary">Special Poojas</a>
+          <a href="/tour-packages/Fixed Departure" className="text-foreground hover:text-primary">Fixed Departure</a>
           <a href="/darshan-kutumb" className="text-foreground hover:text-primary">Darshan Kutumb</a>
           <a href="/about-us" className="text-foreground hover:text-primary">About Us</a>
 

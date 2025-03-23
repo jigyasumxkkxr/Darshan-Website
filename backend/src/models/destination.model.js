@@ -22,6 +22,7 @@ const DestinationSchema = new mongoose.Schema({
     sightseeingOverview: [String],
     packageName: String,
     type: String,
+    bookings: Number,
     onePaxOccupancy: Number,
     twoPaxOccupancy: Number,
     childWithBed: Number,

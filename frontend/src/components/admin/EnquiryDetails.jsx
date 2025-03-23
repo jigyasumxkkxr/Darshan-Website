@@ -13,8 +13,6 @@ const EnquiryDetailsDialog = ({open, setOpen, enquiryId}) => {
         const fetchEnquiryDetail = async()=> {
             const res = await GetEnquiry(enquiryId);
             if(res) {
-                console.log(res.enquiry);
-                
                 setEnquiry(res.enquiry);
             }
         }

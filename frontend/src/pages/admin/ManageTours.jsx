@@ -34,12 +34,14 @@ export default function ManageTours() {
 
 
   const handleDelete = async (id) => {
-
-    const res = await DeleteDestination(id);
-    if (res) {
-      console.log(res.message);
-      dispatch(removeDestinationFromStore(id));
+    if (window.confirm('Are you sure you want to delete this destination?')) {
+      const res = await DeleteDestination(id);
+      if (res) {
+        console.log(res.message);
+        dispatch(removeDestinationFromStore(id));
+      }
     }
+
   };
 
   return (

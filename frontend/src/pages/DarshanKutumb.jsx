@@ -3,12 +3,6 @@ import Header from '@/components/header';
 import React from 'react'
 
 export default function DarshanKutumb() {
-    const images = [
-        'https://media.easemytrip.com/media/Deal/DL638608902538100047/SightSeeing/SightSeeing0zD1al.jpg',
-        'https://media.easemytrip.com/media/Deal/DL638284914247859300/Religious/ReligiouscW3KJ9.jpg',
-        'https://media.easemytrip.com/media/Deal/DL638621879732375756/Religious/Religiousjiql7h.jpg',
-        'https://media.easemytrip.com/media/Deal/DL638608969484118722/SightSeeing/SightSeeingLs15Gk.jpg'
-    ]
 
     return (
         <div>
