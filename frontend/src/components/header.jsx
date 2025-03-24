@@ -9,24 +9,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { isTokenExpired } from "@/lib/isTokenExpired";
 import { useLogout } from "@/hooks/user.hook";
 import { setAuth, setToken } from "@/store/authSlice";
+import { LuLogOut } from "react-icons/lu";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [action, setAction] = useState('login');
   const [menuOpen, setMenuOpen] = useState(false);
-  const {user, token} = useSelector(state => state.auth);
-  const {callApi: Logout} = useLogout();
+  const { user, token } = useSelector(state => state.auth);
+  const { callApi: Logout } = useLogout();
   const dispatch = useDispatch();
 
 
-  const handleLogout = async() => {
-      const res = await Logout();
-      if(res) {
-        console.log(res.message);
-        dispatch(setAuth(null));
-        dispatch(setToken(null));
-      }
+  const handleLogout = async () => {
+    const res = await Logout();
+    if (res) {
+      console.log(res.message);
+      dispatch(setAuth(null));
+      dispatch(setToken(null));
+    }
   }
 
   return (
@@ -47,6 +48,7 @@ export default function Header() {
 
         {/* Desktop Navigation (Always Right) */}
         <nav className="hidden md:flex items-center space-x-6">
+          <a href="/" className="text-foreground hover:text-primary">Home</a>
           <a href="/tour-packages/Chardham" className="text-foreground hover:text-primary">Chardham</a>
           <a href="/tour-packages/Special Pooja" className="text-foreground hover:text-primary">Special Poojas</a>
           <a href="/tour-packages/Fixed Departure" className="text-foreground hover:text-primary">Fixed Departure</a>
@@ -72,28 +74,38 @@ export default function Header() {
           </DropdownMenu>
 
           {/* Login Dropdown */}
-          {
-            (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
-            <DropdownMenu open={open} onOpenChange={setOpen}>
-              <DropdownMenuTrigger asChild>          
+          <DropdownMenu open={open} onOpenChange={setOpen}>
+            <DropdownMenuTrigger asChild>
+              {
+                (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
                   <Button
-                  className="relative bg-blue-500 hover:bg-blue-600 rounded-full font-semibold text-white text-[13px]"
-                  onMouseEnter={() => setOpen(true)}
-                >
-                  Login or Signup
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="pr-10" onMouseLeave={() => setOpen(false)}>
-                <DropdownMenuItem onClick={() => { setOpenLogin(true); setAction('login') }}>
-                  <div className="flex items-center gap-3 p-2">
-                    <FaRegUser size={20} />
-                    <span className="font-medium">Customer Login</span>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>:
-            <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
-          }
+                    className="relative bg-blue-500 hover:bg-blue-600 rounded-full font-semibold text-white text-[13px]"
+                    onMouseEnter={() => setOpen(true)}
+                  >
+                    Login or Signup
+                  </Button> :
+                  <span className="px-2 py-1 rounded-full border text-sm hover:bg-gray-50" onMouseEnter={() => setOpen(true)}>Hi, {user?.name}</span>
+              }
+
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="pr-10" onMouseLeave={() => setOpen(false)}>
+              {
+                (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
+                  <DropdownMenuItem onClick={() => { setOpenLogin(true); setAction('login') }}>
+                    <div className="flex items-center gap-3 p-2">
+                      <FaRegUser size={20} />
+                      <span className="font-medium">Customer Login</span>
+                    </div>
+                  </DropdownMenuItem> :
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <div className="flex items-center gap-3 p-2">
+                      <LuLogOut size={20} />
+                      <span className="font-medium">Logout</span>
+                    </div>
+                  </DropdownMenuItem>
+              }
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Mobile Menu Button */}
@@ -105,6 +117,7 @@ export default function Header() {
       {/* Mobile Navigation (Shown when menuOpen is true) */}
       {menuOpen && (
         <nav className="md:hidden flex flex-col items-center bg-white py-4 space-y-4 border-t">
+          <a href="/" className="text-foreground hover:text-primary">Home</a>
           <a href="/tour-packages/Chardham" className="text-foreground hover:text-primary">Chardham</a>
           <a href="/tour-packages/Special Pooja" className="text-foreground hover:text-primary">Special Poojas</a>
           <a href="/tour-packages/Fixed Departure" className="text-foreground hover:text-primary">Fixed Departure</a>
@@ -114,10 +127,10 @@ export default function Header() {
           {/* Mobile Login Button */}
           {
             (!user || isTokenExpired(token) || !token || !user?.is_verified) ?
-            <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={() => { setOpenLogin(true); setAction('login') }}>
-            Login or Signup
-          </Button>:
-          <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
+              <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={() => { setOpenLogin(true); setAction('login') }}>
+                Login or Signup
+              </Button> :
+              <Button className="bg-blue-500 hover:bg-blue-600 rounded-full text-white font-semibold" onClick={handleLogout}>Logout</Button>
           }
         </nav>
       )}

@@ -33,7 +33,7 @@ const EnquiriesPage = () => {
 
     return (
         <div className="p-6 max-w-5xl mx-auto">
-            <div className="flex p-2 items-center gap-1 cursor-pointer hover:bg-gray-100 w-fit mb-2" onClick={() => navigate(-1)}>
+            <div className="flex p-2 items-center gap-1 cursor-pointer hover:bg-gray-100 w-fit mb-2" onClick={() => navigate('/admin')}>
                 <FaArrowLeftLong />
                 <span className="font-medium">Dashboard</span>
             </div>

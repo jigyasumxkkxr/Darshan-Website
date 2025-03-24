@@ -9,16 +9,18 @@ import { FaCheck } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { ImClock, ImLocation } from "react-icons/im";
+import Footer from './Footer';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import EnquiryForm from './EnquiryForm';
-import Footer from './Footer';
+import EmiDialog from './EMIOptions';
 
 
 export default function TourPackage() {
 
     const {destinations} = useSelector(state=>state.destination);
     const [open, setOpen] = useState(false);
+    const [openEMI, setOpenEMI] = useState(false);
     const {id} = useParams();
     const destination = destinations.filter(des=> des._id === id)[0];
 
@@ -41,7 +43,7 @@ export default function TourPackage() {
                     >
                         {destination?.gallaryImg.map((item, index) => (
                             <SwiperSlide key={index} className="flex flex-col items-center justify-center text-center mt-2">
-                                <img src={item.img} className="rounded-md mx-2 lg:mx-0 w-full sm:w-[90vw] lg:w-full h-[60vh] lg:h-[380px] mb-4" />
+                                <img src={item.img} className="rounded-md w-full sm:w-[90vw] lg:w-full h-[60vh] lg:h-[380px] mb-4" />
                             </SwiperSlide>
                         ))}
                     </Swiper>
@@ -227,8 +229,8 @@ export default function TourPackage() {
                                 </div>
                                 <div>
                                     <p className='flex gap-2 text-gray-700'><FaHandHoldingUsd size={15} /><span className='text-xs font-semibold'> No Cost EMI</span></p>
-                                    <span className='block text-sm text-gray-700 font-semibold'>Starts from {destination.currSymbol} 2290 </span>
-                                    <span className='text-xs flex justify-end text-blue-600 font-semibold'>See options</span>
+                                    <span className='block text-sm text-gray-700 font-semibold'>Starts from {destination.currSymbol}{Math.round(destination.CuttingPrice.Amount/6)} </span>
+                                    <span className='text-xs flex justify-end text-blue-600 font-semibold cursor-pointer' onClick={()=>setOpenEMI(true)}>See options</span>
                                 </div>
                             </section>
                             <section className='p-2 relative'>
@@ -262,14 +264,14 @@ export default function TourPackage() {
                                         })
                                     }
                                 </div>
-                                <button className='w-full border border-[#125296] mr-2 py-3 text-sm rounded-full mt-6 mb-2 text-[#125296] hover:bg-blue-50 font-bold' onClick={() => setOpen(true) }>ENQUIRY NOW</button>
+                                <button className='w-full border border-[#125296] mr-2 py-3 text-sm rounded-full mt-6 mb-2 text-[#125296] hover:bg-blue-50 font-bold' onClick={() => {setOpen(true)} }>ENQUIRY NOW</button>
                             </section>
                         </div>
-                        <div className="flex items-center gap-4 p-4 border rounded-lg shadow-sm bg-gray-100 w-fit ml-6">
+                        <div className="flex justify-center items-center gap-4 p-4 border rounded-lg shadow-sm bg-gray-100 w-full lg:w-fit lg:ml-6">
                             <div className="p-2 bg-white rounded-full border">
                                 <img src="/images/customer_support.png" alt="Support" className="w-10 h-10" />
                             </div>
-                            <div>
+                            <div >
                                 <h3 className="text-lg font-semibold">Need Help?</h3>
                                 <p className="text-sm text-gray-700">Call us : <span className="font-medium">+91-9355078160</span></p>
                                 <p className="text-sm text-gray-700">Mail us : <span className="font-medium">easydarshan@easemytrip.com</span></p>
@@ -284,18 +286,19 @@ export default function TourPackage() {
             </div>
             <div className='fixed bottom-0 z-20 w-full md:hidden'>
                 <div className='flex gap-2 justify-between bg-green-100 px-4 py-1'>
-                    <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {destination.currSymbol}2290</span></p>
-                    <span className='text-xs flex justify-end text-blue-600 font-semibold'>See options</span>
+                    <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {destination.currSymbol}{Math.round(destination.CuttingPrice.Amount/6)}</span></p>
+                    <span className='text-xs flex justify-end text-blue-600 font-semibold cursor-pointer' onClick={()=>{setOpenEMI(true)}}>See options</span>
                 </div>
                 <div className='flex justify-between items-center bg-gray-800 py-2 px-4'>
                     <div className=''>
                         <span className='block text-xl font-bold text-white'>{destination.currSymbol}{destination.twoPaxOccupancy}</span>
                         <span className="text-white text-xs font-semibold">per person on twin sharing</span>
                     </div>
-                    <button className='py-2 px-6 rounded-full bg-blue-500 text-white font-semibold'>Enquiry Now</button>
+                    <button className='py-2 px-6 rounded-full bg-blue-500 text-white font-semibold' onClick={()=> setOpen(true)} >Enquiry Now</button>
                 </div>
             </div>
             <EnquiryForm open={open} setOpen={setOpen} tour={destination} />
+            <EmiDialog open={openEMI} setOpen={setOpenEMI} price={destination.CuttingPrice.Amount} />
             <Footer />
         </div>
     )

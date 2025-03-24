@@ -50,10 +50,10 @@ export default function Destinations_tour_packages() {
       <div>
 
       </div>
-      <div className='px-2 md:px-6 py-3'>
+      <div className='px-2 md:px-16 py-3 lg:px-32'>
         <h1 className='text-2xl font-bold mb-4'>{tour_packages?.Heading} Tour Packages</h1>
         <p className='text-sm font-serif'>{tour_packages?.Description}</p>
-        <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 py-4 '>
+        <div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 py-4 '>
           {
             tour_packages?.Destinations.map((destination, index) => {
               return (

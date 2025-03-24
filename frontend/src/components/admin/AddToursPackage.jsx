@@ -74,7 +74,7 @@ const AddPackage = () => {
         if(res) {
             console.log(res.message);
             dispatch(addTourPackageToStore(res.data));
-            navigate(-1);
+            navigate('/admin/manage-tours-packages');
         }
     };
 

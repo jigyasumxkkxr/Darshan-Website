@@ -12,7 +12,7 @@ export default function DarshanKutumb() {
                 <div className="relative w-full h-[50vh] flex items-center justify-center bg-cover bg-center"
                     style={{ backgroundImage: "url('https://www.easydarshan.com/Content/loyalty/img/loyalty_banner.png')" }}>
                     <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-                    <div>
+                    <div className='text-center'>
                         <h1 style={{ fontFamily: 'Brush Script MT' }} className="relative flex justify-center text-5xl text-white">Darshan Kutumb</h1>
                         <h1 style={{ fontFamily: 'losta' }} className="relative text-3xl sm:text-5xl font-bold text-white">A Loyalty Programme for Devotees</h1>
                     </div>
@@ -21,11 +21,13 @@ export default function DarshanKutumb() {
                 {/* Introduction Section */}
                 <section className="max-w-6xl mx-auto px-6 py-12 text-center">
                     <h2 style={{ fontFamily: 'cursive' }} className="text-2xl sm:text-4xl font-bold">
-                        Earn Loyalty Points on Every Booking. <span className="text-[#7bcce0]">Save on Your Next Booking</span>
+                    Experience Divine Journeys with <span className="text-[#7bcce0]">Darshan Kutumb</span>
                     </h2>
                     <p className="mt-4 text-gray-700">
-                        Kutumb is a loyalty programme and simple & easy way to save money on your bookings. You will earn Loyalty Points when you make bookings on EasyDarshan.com. Loyalty Points earned can be redeemed to get discounts on your future bookings on EasyDarshan.com.
+                    Embark on a spiritual journey with our specially curated travel packages. Whether you're planning a pilgrimage or a peaceful getaway, Darshan Kutumb ensures a seamless and enriching experience.
                     </p>
+                    <h3 className="text-xl sm:text-2xl font-bold my-3 sm:my-8">Why Choose Darshan Kutumb</h3>
+                    <p className="mt-4 text-gray-700">Darshan Kutumb brings you handpicked pilgrimage destinations across India, ensuring a spiritually fulfilling and memorable journey. We provide comfortable stays and guided tours, allowing you to focus on your devotion while we take care of all the arrangements. With our hassle-free booking and dedicated support, your travel experience remains smooth and worry-free from start to finish.</p>
 
                 </section>
 
