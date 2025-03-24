@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from './header'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -9,20 +9,30 @@ import { FaCheck } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { ImClock, ImLocation } from "react-icons/im";
-import Footer from './footer';
+import Footer from './Footer';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import EnquiryForm from './EnquiryForm';
+import EmiDialog from './EMIOptions';
 
 
-export default function TourPackage({destination}) {
+export default function TourPackage() {
 
+    const {destinations} = useSelector(state=>state.destination);
+    const [open, setOpen] = useState(false);
+    const [openEMI, setOpenEMI] = useState(false);
+    const {id} = useParams();
+    const {currency, conversionRate, currencySymbols} = useSelector(state=> state.currency);
+    const destination = destinations.filter(des=> des._id === id)[0];
 
     return (
         <div className='w-full relative'>
             <Header />
             <div className='w-full lg:flex justify-center scrollbar-hidden'>
                 <div className='mt-12 lg:max-w-[819px] '>
-                    <h1 className='text-xl md:text-[30px] font-semibold inline'>{destination.packageName}</h1>
-                    <span className='font-bold ml-4 text-sm'>{destination.noOfNights} Nights / {destination.noOfDays} Days</span>
-                    <p className='text-sm '>{destination.stayCity}</p>
+                    <h1 className='text-xl md:text-[30px] font-semibold inline'>{destination?.packageName}</h1>
+                    <span className='font-bold ml-4 text-sm'>{destination?.noOfNights} Nights / {destination?.noOfDays} Days</span>
+                    <p className='text-sm '>{destination?.stayCity}</p>
                     <Swiper
                         spaceBetween={10}
                         slidesPerView={1}
@@ -32,9 +42,9 @@ export default function TourPackage({destination}) {
                         modules={[Autoplay, Pagination]}
                         className=""
                     >
-                        {destination.gallaryImg.map((item, index) => (
+                        {destination?.gallaryImg.map((item, index) => (
                             <SwiperSlide key={index} className="flex flex-col items-center justify-center text-center mt-2">
-                                <img src={item.img} className="rounded-md mx-2 lg:mx-0 w-full sm:w-[90vw] lg:w-full h-[60vh] lg:h-[380px] mb-4" />
+                                <img src={item.img} className="rounded-md w-full sm:w-[90vw] lg:w-full h-[60vh] lg:h-[380px] mb-4" />
                             </SwiperSlide>
                         ))}
                     </Swiper>
@@ -48,7 +58,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='overview'>
                         {
-                            destination.overview ?
+                            destination?.overview ?
                                 <div className='py-4 mt-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Package Overview</h2>
                                     <p className='px-4 text-sm mt-4 font-serif'>{destination.overview}</p>
@@ -57,7 +67,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='hotel'>
                         {
-                            destination.hotels.length !== 0 ?
+                            destination?.hotels.length !== 0 ?
                                 <div className='py-4 mt-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Hotel Details</h2>
                                     {
@@ -85,12 +95,12 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='itinerary'>
                         {
-                            destination.isTableItinerary ?
+                            destination?.tableItinerary?.Itinerarys?.length > 0 ?
                                 <div className='py-4 mt-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Day Wise Itinerary</h2>
                                     <div className='p-6'>
                                         {
-                                            destination.tableItinerary.Itinerarys.map((item, index) => {
+                                            destination?.tableItinerary.Itinerarys.map((item, index) => {
                                                 return (
                                                     <div key={index} className="relative flex gap-4 pb-6">
                                                         {/* Timeline Line */}
@@ -131,13 +141,13 @@ export default function TourPackage({destination}) {
                     </div>
                     <div className='flex flex-col md:flex-row gap-4' id='inclusion/exclusion'>
                         {
-                            destination.inclusion.length !== 0 ?
+                            destination?.inclusion.length !== 0 ?
                                 <div className='border border-gray-300 shadow-lg md:w-1/2 mt-4 py-4 bg-[#d5f4df] rounded-lg'>
                                     <h2 className='text-xl px-6 font-bold border-l-4 border-[#5fba7f]'>Inclusions</h2>
                                     {
                                         destination.inclusion.map((item, index) => {
                                             return (
-                                                <div className='px-6'>
+                                                <div key={index} className='px-6'>
                                                     <FaCheck className='inline' color='#5fba7f' size={10} />
                                                     <p className='text-sm font-serif inline ml-2'>{item.inclussion}</p>
                                                 </div>
@@ -147,13 +157,13 @@ export default function TourPackage({destination}) {
                                 </div> : null
                         }
                         {
-                            destination.exclusion.length !== 0 ?
+                            destination?.exclusion.length !== 0 ?
                                 <div className='border border-gray-300 shadow-lg md:w-1/2 mt-4 py-4 bg-[#f9e0d6] rounded-lg'>
                                     <h2 className='text-xl px-6 font-bold border-l-4 border-red-500'>Exclusions</h2>
                                     {
                                         destination.exclusion.map((item, index) => {
                                             return (
-                                                <div className='px-6'>
+                                                <div key={index} className='px-6'>
                                                     <RxCross2 className='inline' color='red' size={10} />
                                                     <p className='text-sm font-serif inline ml-2'>{item.exclussion}</p>
                                                 </div>
@@ -165,7 +175,7 @@ export default function TourPackage({destination}) {
                     </div>
                     <div id='term_condition'>
                         {
-                            destination.term_Condition.length !== 0 ?
+                            destination?.term_Condition.length !== 0 ?
                                 <div className='py-4 mt-4 mb-4 border border-gray-300 rounded-lg shadow-lg box-border w-full'>
                                     <h2 className='text-xl font-bold border-l-4 border-l-[#125296] pl-4'>Term & Conditions</h2>
                                     <div className='p-6'>
@@ -190,7 +200,7 @@ export default function TourPackage({destination}) {
                                                                 {
                                                                     item.list &&
                                                                     item.list.map((listItem, index) =>
-                                                                        <li>{listItem}</li>
+                                                                        <li key={index}>{listItem}</li>
                                                                     )
                                                                 }
                                                             </ul>
@@ -214,14 +224,14 @@ export default function TourPackage({destination}) {
                                 <div>
                                     <span className='block text-sm font-semibold text-gray-800'>Starting from</span>
                                     {
-                                        destination.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-lg'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
+                                        destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-lg'>{currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount * conversionRate[currency])}</span>
                                     }
-                                    <p className='flex items-center gap-2'> <span className=' text-3xl font-bold'>{destination.currSymbol}{destination.twoPaxOccupancy}</span><span className='text-xs font-semibold'>Per Person</span></p>
+                                    <p className='flex items-center gap-2'> <span className=' text-3xl font-bold'>{currencySymbols[currency]}{Math.round(destination.twoPaxOccupancy * conversionRate[currency])}</span><span className='text-xs font-semibold'>Per Person</span></p>
                                 </div>
                                 <div>
                                     <p className='flex gap-2 text-gray-700'><FaHandHoldingUsd size={15} /><span className='text-xs font-semibold'> No Cost EMI</span></p>
-                                    <span className='block text-sm text-gray-700 font-semibold'>Starts from {destination.currSymbol} 2290 </span>
-                                    <span className='text-xs flex justify-end text-blue-600 font-semibold'>See options</span>
+                                    <span className='block text-sm text-gray-700 font-semibold'>Starts from {currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount * conversionRate[currency]/6)} </span>
+                                    <span className='text-xs flex justify-end text-blue-600 font-semibold cursor-pointer' onClick={()=>setOpenEMI(true)}>See options</span>
                                 </div>
                             </section>
                             <section className='p-2 relative'>
@@ -234,9 +244,9 @@ export default function TourPackage({destination}) {
                                 <span className='flex justify-center text-xs font-semibold my-4 border-b'>Package Includes</span>
                                 <div className='flex gap-4'>
                                     {
-                                        destination.packageIncludes.map((item, index) => {
+                                        destination?.packageIncludes.map((item, index) => {
                                             return (
-                                                <div>
+                                                <div key={index}>
                                                     {
                                                         item.Name === 'Hotel' && <div className='flex flex-col gap-1 items-center'><img src="https://www.easemytrip.com/holidays/Content/customize/img/hotel-1.svg" alt="Hotel" /><p className='text-xs text-gray-700'>{item.Name}</p></div>
                                                     }
@@ -255,14 +265,14 @@ export default function TourPackage({destination}) {
                                         })
                                     }
                                 </div>
-                                <button className='w-full border border-[#125296] mr-2 py-3 text-sm rounded-full mt-6 mb-2 text-[#125296] hover:bg-blue-50 font-bold'>ENQUIRY NOW</button>
+                                <button className='w-full border border-[#125296] mr-2 py-3 text-sm rounded-full mt-6 mb-2 text-[#125296] hover:bg-blue-50 font-bold' onClick={() => {setOpen(true)} }>ENQUIRY NOW</button>
                             </section>
                         </div>
-                        <div className="flex items-center gap-4 p-4 border rounded-lg shadow-sm bg-gray-100 w-fit ml-6">
+                        <div className="flex justify-center items-center gap-4 p-4 border rounded-lg shadow-sm bg-gray-100 w-full lg:w-fit lg:ml-6">
                             <div className="p-2 bg-white rounded-full border">
                                 <img src="/images/customer_support.png" alt="Support" className="w-10 h-10" />
                             </div>
-                            <div>
+                            <div >
                                 <h3 className="text-lg font-semibold">Need Help?</h3>
                                 <p className="text-sm text-gray-700">Call us : <span className="font-medium">+91-9355078160</span></p>
                                 <p className="text-sm text-gray-700">Mail us : <span className="font-medium">easydarshan@easemytrip.com</span></p>
@@ -277,17 +287,19 @@ export default function TourPackage({destination}) {
             </div>
             <div className='fixed bottom-0 z-20 w-full md:hidden'>
                 <div className='flex gap-2 justify-between bg-green-100 px-4 py-1'>
-                    <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {destination.currSymbol}2290</span></p>
-                    <span className='text-xs flex justify-end text-blue-600 font-semibold'>See options</span>
+                    <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount * conversionRate[currency]/6)}</span></p>
+                    <span className='text-xs flex justify-end text-blue-600 font-semibold cursor-pointer' onClick={()=>{setOpenEMI(true)}}>See options</span>
                 </div>
                 <div className='flex justify-between items-center bg-gray-800 py-2 px-4'>
                     <div className=''>
-                        <span className='block text-xl font-bold text-white'>{destination.currSymbol}{destination.twoPaxOccupancy}</span>
+                        <span className='block text-xl font-bold text-white'>{currencySymbols[currency]}{Math.round(destination.twoPaxOccupancy * conversionRate[currency])}</span>
                         <span className="text-white text-xs font-semibold">per person on twin sharing</span>
                     </div>
-                    <button className='py-2 px-6 rounded-full bg-blue-500 text-white font-semibold'>Enquiry Now</button>
+                    <button className='py-2 px-6 rounded-full bg-blue-500 text-white font-semibold' onClick={()=> setOpen(true)} >Enquiry Now</button>
                 </div>
             </div>
+            <EnquiryForm open={open} setOpen={setOpen} tour={destination} />
+            <EmiDialog open={openEMI} setOpen={setOpenEMI} price={destination.CuttingPrice.Amount} />
             <Footer />
         </div>
     )

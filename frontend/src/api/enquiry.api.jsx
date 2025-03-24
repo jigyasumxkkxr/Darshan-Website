@@ -1,7 +1,7 @@
 import baseURL from "./config";
 
 const fetchAPI = async(url , method = 'GET', body = null) => {
-    headers = {
+    const headers = {
         'Content-Type': 'application/json',
     };
 

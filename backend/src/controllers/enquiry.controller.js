@@ -1,3 +1,4 @@
+import { Destination } from "../models/destination.model.js";
 import { Enquiry } from "../models/enquiry.model.js";
 
 
@@ -9,6 +10,10 @@ export const addEnquiry = async (req, res) => {
 
         if (!packageName || !destination || !name || !mobile || !email) {
             return res.status(400).json({success:false, message: "Required fields are missing" });
+        }
+        const destinationTour = await Destination.findById(destination);
+        if (!destinationTour) {
+            return res.status(404).json({success:false, message: "Destination not found" });
         }
 
         const newEnquiry = new Enquiry({
@@ -30,6 +35,10 @@ export const addEnquiry = async (req, res) => {
         });
 
         await newEnquiry.save();
+
+        destinationTour.bookings = destinationTour.bookings + 1;
+        await destinationTour.save();
+
         return res.status(201).json({success:true, message: "Enquiry added successfully", enquiry: newEnquiry });
 
     } catch (error) {
@@ -46,7 +55,7 @@ export const getAllEnquiries = async (req, res) => {
             return res.status(401).json({success:false, message: "Unauthorized to perform this action" });
         }
 
-        const enquiries = await Enquiry.find().populate("user", "name email");
+        const enquiries = await Enquiry.find().populate("user", "name email mobile");
         return res.status(200).json({success:true, enquiries});
     } catch (error) {
         console.error(error);
@@ -74,6 +83,12 @@ export const deleteEnquiry = async (req, res) => {
         const enquiry = await Enquiry.findByIdAndDelete(req.params.id);
         if (!enquiry) {
             return res.status(404).json({success:false, message: "Enquiry not found" });
+        }
+
+        const destination = await Destination.findById(enquiry.destination);
+        if (destination) {
+            destination.bookings = destination.bookings - 1;
+            await destination.save();
         }
         return res.status(200).json({success:true, message: "Enquiry deleted successfully" });
     } catch (error) {
