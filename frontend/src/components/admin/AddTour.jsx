@@ -35,6 +35,7 @@ export default function AddDestinationTour() {
         startPoint: "",
         endPoint: "",
         stayCity: "",
+        bookings: 0 ,
         onePaxOccupancy: 0,
         twoPaxOccupancy: 0,
         childWithBed: 0,

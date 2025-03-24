@@ -61,7 +61,6 @@ const AdminDashboard = () => {
             <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={() => navigate('/admin/manage-tour')}>Manage Tours</li>
             <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={() => navigate('/admin/manage-tours-packages')}>Manage Tours Packages</li>
             <li className="hover:bg-blue-700 p-2 rounded cursor-pointer" onClick={() => navigate('/admin/enquiry')}>Enquiry</li>
-            <li className="hover:bg-blue-700 p-2 rounded cursor-pointer">Users</li>
           </ul>
         </nav>
         <div className="mt-auto">
