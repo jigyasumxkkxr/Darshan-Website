@@ -2,11 +2,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { useSelector } from "react-redux";
 
 export default function EmiDialog({ open, setOpen, price }) {
     const annualInterestRate = 12; // 12% per year
     const monthlyInterestRate = annualInterestRate / 12 / 100; // 0.01 (1% per month)
-
+    const {currency, conversionRate, currencySymbols} = useSelector(state=> state.currency);
     const monthsOptions = [3, 6, 9, 12, 18, 24];
 
     const calculateEMI = (principal, months) => {
@@ -24,7 +25,7 @@ export default function EmiDialog({ open, setOpen, price }) {
     const emiPlans = monthsOptions.map((months) => ({
         type: months <= 6 ? "No Cost EMI" : "Standard EMI",
         months,
-        amount: `₹${calculateEMI(price, months)}`,
+        amount: `${currencySymbols[currency]}${(calculateEMI(price, months) * conversionRate[currency]).toFixed(2)}`,
     }));
 
     return (

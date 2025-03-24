@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice";
 import destinationSlice from "./destinationSlice"
 import tourPackagesSlice from './tourPackagesSlice'
+import currencySlice from './currencySlice';
 
 import {
     persistReducer,
@@ -25,7 +26,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
    auth: authSlice,
    destination: destinationSlice,
-   tourPackages: tourPackagesSlice
+   tourPackages: tourPackagesSlice,
+   currency: currencySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

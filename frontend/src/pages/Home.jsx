@@ -24,6 +24,7 @@ import { useGetAllDestination } from "@/hooks/destination.hook"
 import { setDestinations } from "@/store/destinationSlice"
 import { useNavigate } from "react-router-dom"
 import EnquiryForm from "@/components/EnquiryForm"
+import { setConversionRate } from "@/store/currencySlice"
 
 
 export default function Home() {
@@ -32,6 +33,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { tourPackages } = useSelector(state => state.tourPackages);
   const { destinations } = useSelector(state => state.destination);
+  const {currency, conversionRate, currencySymbols} = useSelector(state=> state.currency);
   const [open, setOpen] = useState(false);
   const { loading: tourLoading, callApi: getAllTourPackages } = useGetAllTourPackages();
   const { loading: desLoading, callApi: getDestinations } = useGetAllDestination();
@@ -53,6 +55,15 @@ export default function Home() {
       }
     }
     fetchDestinations();
+
+    async function getExchangeRates() {
+      const res = await fetch("https://api.exchangerate-api.com/v4/latest/INR");
+      const data = await res.json();
+      if(res.ok) {
+          dispatch(setConversionRate(data.rates));
+      }
+    }
+    getExchangeRates();
 
   }, []);
 
@@ -190,8 +201,8 @@ export default function Home() {
               <div className="absolute bottom-4 left-4 text-white transition-opacity duration-300 opacity-0 group-hover:opacity-100">
                 <h2 className="text-lg font-bold">{destination?.packageName}</h2>
                 <p className="text-md">
-                  Price: {destination?.currSymbol}
-                  {destination?.twoPaxOccupancy}
+                  Price: {currencySymbols[currency]}
+                  {Math.round(destination?.twoPaxOccupancy * conversionRate[currency])}
                 </p>
               </div>
             </div>
@@ -217,8 +228,8 @@ export default function Home() {
               <div className="absolute bottom-4 left-4 text-white transition-opacity duration-300 opacity-0 group-hover:opacity-100">
                 <h2 className="text-lg font-bold">{destination?.packageName}</h2>
                 <p className="text-md">
-                  Price: {destination?.currSymbol}
-                  {destination?.twoPaxOccupancy}
+                  Price: {currencySymbols[currency]}
+                  {Math.round(destination?.twoPaxOccupancy * conversionRate[currency])}
                 </p>
               </div>
             </div>
@@ -244,7 +255,7 @@ export default function Home() {
                   <div className="absolute mt-16 ml-6 z-10">
                     <h2 style={{ fontFamily: 'Brush Script MT' }} className="text-5xl text-gray-200">Spritual Peace</h2>
                     <h2 className="text-3xl font-bold mt-4 text-gray-200">{item?.Heading}</h2>
-                    <span className="text-gray-100">Starting from <span className="text-xl font-bold ml-4">{item?.Destinations[0]?.currSymbol}{item?.Destinations[0]?.twoPaxOccupancy}</span></span>
+                    <span className="text-gray-100">Starting from <span className="text-xl font-bold ml-4">{currencySymbols[currency]}{Math.round(item?.Destinations[0]?.twoPaxOccupancy * conversionRate[currency])}</span></span>
                   </div>
                   <img src={(item?.Destinations[index] || item?.Destinations[0])?.packageImgUrl} alt='banner-image' className="object-cover h-72 w-[80vw] mb-4 rounded-2xl mx-auto brightness-50" />
                 </div>

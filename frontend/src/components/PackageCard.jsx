@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { FaHandHoldingUsd } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import EmiDialog from './EMIOptions';
+import { useSelector } from 'react-redux';
 
 export default function PackageCard({ destination }) {
 
     const navigate = useNavigate();
     const [preventNavigation, setPreventNavigation] = useState(false);
     const [openEMI, setOpenEMI] = useState(false);
+    const {currency, conversionRate, currencySymbols} = useSelector(state=> state.currency);
 
     return (
         <div
@@ -52,9 +54,9 @@ export default function PackageCard({ destination }) {
                     <div className=''>
                         <span className='block text-xs text-gray-800'>Starting from</span>
                         {
-                            destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-sm font-bold'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
+                            destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-sm font-bold'>{currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount*conversionRate[currency])}</span>
                         }
-                        <p className='flex items-center gap-2'> <span className=' text-2xl font-bold'>{destination.currSymbol}{destination.twoPaxOccupancy}</span></p>
+                        <p className='flex items-center gap-2'> <span className=' text-2xl font-bold'>{currencySymbols[currency]}{Math.round(destination.twoPaxOccupancy * conversionRate[currency])}</span></p>
                         <span className='text-xs'>per person on twin sharing</span>
                     </div>
                     <button className='px-6 py-1 rounded-full bg-[#125296] text-white font-semibold'>View Package</button>

@@ -10,6 +10,8 @@ import { isTokenExpired } from "@/lib/isTokenExpired";
 import { useLogout } from "@/hooks/user.hook";
 import { setAuth, setToken } from "@/store/authSlice";
 import { LuLogOut } from "react-icons/lu";
+import CurrencySelector from "./Currency";
+import { IoCall } from "react-icons/io5";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -57,21 +59,24 @@ export default function Header() {
         </nav>
 
         {/* Right-side Controls */}
-        <div className="hidden md:flex md:flex-col items-center space-x-4">
-          {/* Call Info Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="w-fit font-sans cursor-pointer">˅</button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <div>
-                  <p className="font-semibold text-xl text-blue-700">Call us:</p>
-                  <p>Tel : 011 - 35359999</p>
-                </div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="hidden md:flex md:flex-col items-center gap-1 space-x-4">
+          <div className="flex gap-1 pl-2">
+            {/* Call Info Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-fit font-sans flex items-center gap-1 border px-2 rounded-md cursor-pointer text-sm"><IoCall size={12} /> ˅</button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <div>
+                    <p className="font-semibold text-xl text-blue-700">Call us:</p>
+                    <p>Tel : 011 - 35359999</p>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <CurrencySelector />
+          </div>
 
           {/* Login Dropdown */}
           <DropdownMenu open={open} onOpenChange={setOpen}>

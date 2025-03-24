@@ -22,6 +22,7 @@ export default function TourPackage() {
     const [open, setOpen] = useState(false);
     const [openEMI, setOpenEMI] = useState(false);
     const {id} = useParams();
+    const {currency, conversionRate, currencySymbols} = useSelector(state=> state.currency);
     const destination = destinations.filter(des=> des._id === id)[0];
 
     return (
@@ -223,13 +224,13 @@ export default function TourPackage() {
                                 <div>
                                     <span className='block text-sm font-semibold text-gray-800'>Starting from</span>
                                     {
-                                        destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-lg'>{destination.currSymbol}{destination.CuttingPrice.Amount}</span>
+                                        destination?.CuttingPrice.IsActive && <span className='line-through text-gray-700 text-lg'>{currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount * conversionRate[currency])}</span>
                                     }
-                                    <p className='flex items-center gap-2'> <span className=' text-3xl font-bold'>{destination.currSymbol}{destination.twoPaxOccupancy}</span><span className='text-xs font-semibold'>Per Person</span></p>
+                                    <p className='flex items-center gap-2'> <span className=' text-3xl font-bold'>{currencySymbols[currency]}{Math.round(destination.twoPaxOccupancy * conversionRate[currency])}</span><span className='text-xs font-semibold'>Per Person</span></p>
                                 </div>
                                 <div>
                                     <p className='flex gap-2 text-gray-700'><FaHandHoldingUsd size={15} /><span className='text-xs font-semibold'> No Cost EMI</span></p>
-                                    <span className='block text-sm text-gray-700 font-semibold'>Starts from {destination.currSymbol}{Math.round(destination.CuttingPrice.Amount/6)} </span>
+                                    <span className='block text-sm text-gray-700 font-semibold'>Starts from {currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount * conversionRate[currency]/6)} </span>
                                     <span className='text-xs flex justify-end text-blue-600 font-semibold cursor-pointer' onClick={()=>setOpenEMI(true)}>See options</span>
                                 </div>
                             </section>
@@ -286,12 +287,12 @@ export default function TourPackage() {
             </div>
             <div className='fixed bottom-0 z-20 w-full md:hidden'>
                 <div className='flex gap-2 justify-between bg-green-100 px-4 py-1'>
-                    <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {destination.currSymbol}{Math.round(destination.CuttingPrice.Amount/6)}</span></p>
+                    <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {currencySymbols[currency]}{Math.round(destination.CuttingPrice.Amount * conversionRate[currency]/6)}</span></p>
                     <span className='text-xs flex justify-end text-blue-600 font-semibold cursor-pointer' onClick={()=>{setOpenEMI(true)}}>See options</span>
                 </div>
                 <div className='flex justify-between items-center bg-gray-800 py-2 px-4'>
                     <div className=''>
-                        <span className='block text-xl font-bold text-white'>{destination.currSymbol}{destination.twoPaxOccupancy}</span>
+                        <span className='block text-xl font-bold text-white'>{currencySymbols[currency]}{Math.round(destination.twoPaxOccupancy * conversionRate[currency])}</span>
                         <span className="text-white text-xs font-semibold">per person on twin sharing</span>
                     </div>
                     <button className='py-2 px-6 rounded-full bg-blue-500 text-white font-semibold' onClick={()=> setOpen(true)} >Enquiry Now</button>
