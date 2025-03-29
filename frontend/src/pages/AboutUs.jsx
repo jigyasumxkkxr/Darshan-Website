@@ -31,10 +31,10 @@ const AboutUs = () => {
                         Start Journey to Enlightenment With <span className="text-[#7bcce0]">Best-Selling Packages</span>
                     </h2>
                     <p className="mt-4 text-gray-700">
-                        At EasyDarshan, we are dedicated to making your spiritual journey as seamless and fulfilling as possible. Founded with the vision to simplify the pilgrimage experience for devotees, we focus on providing hassle-free access to some of the most revered temples and sacred sites across India. Whether it's ensuring priority darshan, comfortable travel, or personalized rituals, we are here to handle all the details, so you can focus on your spiritual connection.
+                        At EasyHolidayinn, we are dedicated to making your spiritual journey as seamless and fulfilling as possible. Founded with the vision to simplify the pilgrimage experience for devotees, we focus on providing hassle-free access to some of the most revered temples and sacred sites across India. Whether it's ensuring priority darshan, comfortable travel, or personalized rituals, we are here to handle all the details, so you can focus on your spiritual connection.
                     </p>
                     <p className="mt-4 text-gray-700">
-                        With deep respect for Indian traditions and values, EasyDarshan offers tailored pilgrimage packages designed to meet the needs of modern-day travelers seeking a divine experience. Our expert team takes care of all the logistics — from fast-track temple entries to comfortable accommodations and special pooja arrangements. We also provide dedicated assistance at every step of the journey, ensuring your trip is both peaceful and spiritually enriching.
+                        With deep respect for Indian traditions and values, EasyHolidayinn offers tailored pilgrimage packages designed to meet the needs of modern-day travelers seeking a divine experience. Our expert team takes care of all the logistics — from fast-track temple entries to comfortable accommodations and special pooja arrangements. We also provide dedicated assistance at every step of the journey, ensuring your trip is both peaceful and spiritually enriching.
                     </p>
                 </section>
 
@@ -96,7 +96,7 @@ const AboutUs = () => {
 
                 {/* Footer Section */}
                 <div className="text-center py-6 text-lg font-semibold bg-gray-100 mb-10">
-        //Join us at EasyDarshan, where devotion meets convenience//
+        //Join us at EasyHolidayinn, where devotion meets convenience//
                 </div>
             </div>
             <Footer />

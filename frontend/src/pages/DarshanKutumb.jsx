@@ -50,14 +50,14 @@ export default function DarshanKutumb() {
                             <img className="size-16" src="https://www.easydarshan.com/Content/loyalty/img/booking.svg" alt="emt offer1" />
                             <h4 className="text font-semibold ft-600 mt-15">Earn Points on every booking</h4>
                             <p className="text mt-2"></p>
-                            Now save more with EasyDarshan. You will earn loyalty points on each and every online and offline booking.
+                            Now save more with EasyHolidayinn. You will earn loyalty points on each and every online and offline booking.
                             <p></p>
                         </div>
                         <div className="flex flex-col items-center">
                             <img className="size-16" src="https://www.easydarshan.com/Content/loyalty/img/Reedem.svg" alt="emt offer2" />
                             <h4 className="text font-semibold ft-600 mt-15">Redeem Points to save more</h4>
                             <p className="text mt-2"></p>
-                            Use Kutumb Points while making a booking on EasyDarshan.com and cut down your package price.
+                            Use Kutumb Points while making a booking on easyholidayinn.com and cut down your package price.
                             <p></p>
                         </div>
                         <div className="flex flex-col items-center">
@@ -79,7 +79,7 @@ export default function DarshanKutumb() {
 
                 {/* Footer Section */}
                 <div className="text-center py-6 text-lg font-semibold bg-gray-100 mb-10">
-        //Join us at EasyDarshan, where devotion meets convenience//
+        //Join us at EasyHolidayinn, where devotion meets convenience//
                 </div>
             </div>
             <Footer />

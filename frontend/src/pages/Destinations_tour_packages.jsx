@@ -110,7 +110,7 @@ export default function Destinations_tour_packages() {
         </div>
       </div>
       <div className="bg-blue-100 text-black p-6 rounded-lg text-center max-w-5xl mx-auto my-6">
-        <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easydarshan@easemytrip.com</span> |
+        <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easyholidayinn@easemytrip.com</span> |
         <span className="font-bold text-lg"> Contact No:</span> 011 35359999
       </div>
       <div className='fixed right-0 top-[45vh]' onClick={()=>setOpen(true)}>
