@@ -13,13 +13,7 @@ export default function PackageCard({ destination }) {
 
     return (
         <div
-            className=' max-w-[380px] border-2 md:border hover:shadow-2xl relative bg-white cursor-pointer'
-            onClick={() => {
-                if (!preventNavigation) {
-                    navigate(`/destination-tour/${destination._id}`);
-                }
-                setPreventNavigation(false); // Reset after click
-            }}
+            className=' max-w-[380px] border-2 md:border hover:shadow-2xl relative bg-white'
         >
             <img src={destination?.packageImgUrl} alt="" className='w-full h-[190px] object-cover' />
             <div className='p-3'>
@@ -59,14 +53,22 @@ export default function PackageCard({ destination }) {
                         <p className='flex items-center gap-2'> <span className=' text-2xl font-bold'>{currencySymbols[currency]}{Math.round(destination.twoPaxOccupancy * conversionRate[currency])}</span></p>
                         <span className='text-xs'>per person on twin sharing</span>
                     </div>
-                    <button className='px-6 py-1 rounded-full bg-[#125296] text-white font-semibold'>View Package</button>
+                    <button 
+                        className='px-6 py-1 rounded-full bg-[#125296] text-white font-semibold cursor-pointer'
+                        onClick={() => {
+                            if (!preventNavigation) {
+                                navigate(`/destination-tour/${destination._id}`);
+                            }
+                            setPreventNavigation(false); // Reset after click
+                        }}
+                    >View Package</button>
                 </div>
 
             </div>
             <div className='flex gap-4 bg-blue-50 px-4 py-1 w-full absolute bottom-0'>
                 <p className='text-gray-700 flex gap-2'><FaHandHoldingUsd size={15} /><span className='text-xs font-bold'> No Cost EMI Starts from {destination.currSymbol}{Math.round(destination.CuttingPrice.Amount / 6)}</span></p>
                 <span
-                    className='text-xs flex justify-end text-blue-600 font-semibold hover:text-blue-700'
+                    className='text-xs flex justify-end text-blue-600 font-semibold hover:text-blue-700 cursor-pointer'
                     onClick={(e) => {
                         e.stopPropagation();
                         setPreventNavigation(true); // Prevent navigation when closing the dialog
