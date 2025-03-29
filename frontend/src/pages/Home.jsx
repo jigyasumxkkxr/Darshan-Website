@@ -31,9 +31,12 @@ export default function Home() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [filteredTourPackages, setFilteredTourPackages] = useState([]);
+  const [searchValue, setSearchValue] = useState(null);
+  const [selectedTourPackage, setSelectedTourPackage] = useState(null);
   const { tourPackages } = useSelector(state => state.tourPackages);
   const { destinations } = useSelector(state => state.destination);
-  const {currency, conversionRate, currencySymbols} = useSelector(state=> state.currency);
+  const { currency, conversionRate, currencySymbols } = useSelector(state => state.currency);
   const [open, setOpen] = useState(false);
   const { loading: tourLoading, callApi: getAllTourPackages } = useGetAllTourPackages();
   const { loading: desLoading, callApi: getDestinations } = useGetAllDestination();
@@ -59,8 +62,8 @@ export default function Home() {
     async function getExchangeRates() {
       const res = await fetch("https://api.exchangerate-api.com/v4/latest/INR");
       const data = await res.json();
-      if(res.ok) {
-          dispatch(setConversionRate(data.rates));
+      if (res.ok) {
+        dispatch(setConversionRate(data.rates));
       }
     }
     getExchangeRates();
@@ -78,6 +81,22 @@ export default function Home() {
       src: 'https://www.easydarshan.com/images/new-img/banner3-21.webp'
     }
   ];
+
+
+  const handleSearch = async (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchValue(query);
+    setSelectedTourPackage(null);
+    if (query.length > 0) {
+      setFilteredTourPackages(
+        tourPackages.filter((pack) =>
+          pack.Heading.toLowerCase().includes(query)
+        )
+      );
+    } else {
+      setFilteredTourPackages([]);
+    }
+  }
 
 
   return (
@@ -114,9 +133,21 @@ export default function Home() {
                 <Input
                   placeholder='Search Your Dream Pilgrimage!'
                   className="pl-12 h-10 md:h-14 w-full text-black rounded-l-full border-none focus:ring-0"
+                  value={searchValue}
+                  onChange={handleSearch}
                 />
               </div>
-              <Button className="h-10 md:h-14 px-6 md:px-12 bg-[#125296] hover:bg-[#125296] text-white rounded-l-full rounded-r-full">
+              {
+                filteredTourPackages.length > 0 ?
+                  <div className={`${selectedTourPackage ? 'hidden' : 'block'} absolute z-10 top-10 md:top-14 bg-white rounded-xl w-full max-h-72 overflow-y-auto shadow-lg`}>
+                    {
+                      filteredTourPackages.map((pack, index) => (
+                        <span key={index} className="block cursor-pointer text-gray-800 text-left py-2 md:py-4 text-md hover:bg-gray-200 pl-5 border-b" onClick={() => { setSearchValue(pack.Heading); setSelectedTourPackage(pack) }}>{pack.Heading}</span>
+                      ))
+                    }
+                  </div> : null
+              }
+              <Button className="h-10 md:h-14 px-6 md:px-12 bg-[#125296] hover:bg-[#125296] text-white rounded-l-full rounded-r-full" onClick={() => navigate(`/tour-packages/${selectedTourPackage?.Heading}`)}>
                 Search
               </Button>
             </div>
@@ -158,10 +189,10 @@ export default function Home() {
           </Carousel>
 
           {/* Plan Trip Button */}
-          <div className="fixed bottom-8 right-8 z-20" onClick={()=>setOpen(true)}>
+          <div className="fixed bottom-8 right-8 z-20" onClick={() => setOpen(true)}>
             <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg" >
               <MessageSquare className="h-5 w-5" />
-              Plan Your Trip 
+              Plan Your Trip
             </Button>
           </div>
         </div>
@@ -214,7 +245,7 @@ export default function Home() {
           {destinations?.slice(0, 5).map((destination) => (
             <div
               key={destination?._id}
-              className="relative group cursor-pointer rounded-xl w-full h-[40vh] bg-cover bg-center transition-transform duration-300 ease-in-out hover:scale-105"
+              className="relative group cursor-pointer rounded-xl w-full h-[30vh] bg-cover bg-center transition-transform duration-300 ease-in-out hover:scale-105"
               style={{
                 backgroundImage: `url(${destination?.packageImgUrl})`,
                 filter: "brightness(90%)",
@@ -345,7 +376,7 @@ export default function Home() {
           </div>
         </div>
         <div className="bg-blue-100 text-black p-3 rounded-lg text-center max-w-6xl mx-auto mt-10">
-          <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easydarshan@easemytrip.com</span> |
+          <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easyholidayinn@easemytrip.com</span> |
           <span className="font-bold text-lg"> Contact No:</span> 011 35359999
         </div>
       </section>

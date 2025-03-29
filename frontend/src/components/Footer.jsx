@@ -7,7 +7,7 @@ export default function Footer() {
         {/* Left Side - Branding */}
         <div className="text-center md:text-left">
           <p className="text-sm">Division of <span className="font-bold">EaseMyTrip</span></p>
-          <p className="text-sm">Copyright &copy; EasyDarshan | All Rights Reserved.</p>
+          <p className="text-sm">Copyright &copy; EasyHolidayinn | All Rights Reserved.</p>
         </div>
 
         {/* Right Side - Logos */}

@@ -275,14 +275,14 @@ export default function TourPackage() {
                             <div >
                                 <h3 className="text-lg font-semibold">Need Help?</h3>
                                 <p className="text-sm text-gray-700">Call us : <span className="font-medium">+91-9355078160</span></p>
-                                <p className="text-sm text-gray-700">Mail us : <span className="font-medium">easydarshan@easemytrip.com</span></p>
+                                <p className="text-sm text-gray-700">Mail us : <span className="font-medium">easyholidayinn@easemytrip.com</span></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="bg-blue-100 text-black p-6 rounded-lg text-center max-w-5xl mx-auto my-6">
-                <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easydarshan@easemytrip.com</span> |
+                <span className="font-bold text-xl">Email ID:</span> <span className='text-lg'>easyholidayinn@easemytrip.com</span> |
                 <span className="font-bold text-lg"> Contact No:</span> 011 35359999
             </div>
             <div className='fixed bottom-0 z-20 w-full md:hidden'>
